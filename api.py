@@ -217,8 +217,8 @@ LOIS_CONNUES = {
     # ── DROIT CIVIL ──────────────────────────────────────────────────────
 
     "code_civil": {
-        "numac": "2021040938",   # ✅ vérifié Justel 04/02/2021 — Nouveau Code civil
-        "titre": "Nouveau Code civil belge (en vigueur progressivement depuis 2022)",
+        "numac": "2022A32058",   # ✅ vérifié Justel — CODE CIVIL LIVRE 5 "Les obligations" — en vigueur 01/01/2023, màj 01/07/2024
+        "titre": "Code civil — Livre 5 : Les obligations (loi 28 avril 2022, en vigueur depuis le 1er janvier 2023)",
         "aliases": [
             "contrat civil", "responsabilité civile", "dommages intérêts",
             "obligation contractuelle", "nullité contrat", "vice consentement",
@@ -876,6 +876,7 @@ async def health():
             "code_penal": "1867060801 ✅",
             "code_civil_ancien": "1804032138 ✅",
             "accidents_travail": "1971100402 ✅",
+            "code_civil: 2022A32058 ✅",
         },
         "a_verifier": [
             "conges_annuels: 2001012823",
@@ -883,7 +884,6 @@ async def health():
             "code_droit_economique: 2013009743",
             "droit_auteur: 1994022068",
             "procedure_penale: 1878032650",
-            "code_civil: 2021040938",
             "cir92: 1992003206",
             "tva: 1969071701",
             "securite_sociale: 1969062710",
