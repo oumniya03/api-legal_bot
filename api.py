@@ -127,7 +127,14 @@ LOIS_CONNUES = {
         "aliases": [
             "égalité hommes femmes", "discrimination genre",
             "écart salarial", "pay gap", "sexisme travail",
-            "inégalité salariale", "discrimination femme travail"
+            "inégalité salariale", "discrimination femme travail",
+            "salaire inférieur femme", "salaire inférieur collègues masculins",
+            "moins payée que collègues hommes", "rémunération inférieure femme",
+            "inégalité de traitement femme homme", "discrimination salariale femme",
+            "salaire homme femme", "écart de rémunération",
+            "même travail salaire différent", "travail égal salaire inégal",
+            "salaire inférieur homme", "inégalité salariale genre",
+            "discrimination salariale genre", "salaire moins élevé femme"
         ]
     },
 
@@ -198,8 +205,6 @@ LOIS_CONNUES = {
         ]
     },
 
-
-
     # ── INSOLVABILITÉ ────────────────────────────────────────────────────
 
     "insolvabilite": {
@@ -217,7 +222,7 @@ LOIS_CONNUES = {
     # ── DROIT CIVIL ──────────────────────────────────────────────────────
 
     "code_civil": {
-        "numac": "2022A32058",   # ✅ vérifié Justel — CODE CIVIL LIVRE 5 "Les obligations" — en vigueur 01/01/2023, màj 01/07/2024
+        "numac": "2022A32058",   # ✅ vérifié Justel — CODE CIVIL LIVRE 5 "Les obligations" — en vigueur 01/01/2023
         "titre": "Code civil — Livre 5 : Les obligations (loi 28 avril 2022, en vigueur depuis le 1er janvier 2023)",
         "aliases": [
             "contrat civil", "responsabilité civile", "dommages intérêts",
@@ -244,7 +249,7 @@ LOIS_CONNUES = {
 
     "cir92": {
         "numac": "1992003456",   # ✅ AR 10/04/1992 — texte original PDF (avant 1997)
-        # ⚠️ Pas de version HTML consolidée sur Justel — texte complet sur Fisconetplus
+        # ⚠️ Pas de version HTML consolidée sur Justel
         # Source alternative : https://finances.belgium.be/fr/expertises-et-publications/legislation-et-circulaires/impots-sur-les-revenus/cir-92
         "titre": "Code des impôts sur les revenus 1992 (CIR92)",
         "aliases": [
@@ -414,7 +419,6 @@ async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None) -> dict
             await page.wait_for_timeout(2000)
             texte = await page.inner_text("body")
             if len(texte) < 500 or "formulaire" in texte.lower()[:200]:
-                # Fallback change_lg.pl si article.pl insuffisant
                 url_fallback = f"{BASE_URL_JUSTEL}/cgi_loi/change_lg.pl?language=fr&la=F&table_name=loi&cn={numac}"
                 await page.goto(url_fallback, wait_until="networkidle", timeout=30000)
                 await page.wait_for_timeout(1500)
@@ -860,36 +864,7 @@ async def debug_justel(sujet: str = Query(...)):
 async def health():
     return {
         "status": "online",
-        "version": "v5 — URL universelle cgi_loi/article.pl + tous numac vérifiés",
+        "version": "v5.1 — aliases egalite_hommes_femmes enrichis",
         "url_format": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=F&caller=list&numac_search=NUMAC&NUMAC=0&nm_ecran=NUMAC&trier=promulgation&fr=f&choix1=et&choix2=et",
-        "numac_verified": {
-            "contrat_travail": "1978070303 ✅",
-            "bien_etre_travail": "1996012650 ✅",
-            "duree_travail": "1971031602 ✅",
-            "statut_unique": "2013012289 ✅",
-            "anti_discrimination": "2007002099 ✅",
-            "egalite_hommes_femmes": "2009000344 ✅",
-            "code_societes": "2019A40586 ✅",
-            "insolvabilite": "2017012998 ✅",
-            "protection_donnees": "2018013455 ✅",
-            "protection_licenciement": "2014012010 ✅",
-            "code_penal": "1867060801 ✅",
-            "code_civil_ancien": "1804032138 ✅",
-            "accidents_travail": "1971100402 ✅",
-            "code_civil": "2022A32058 ✅",
-        },
-        "a_verifier": [
-            "conges_annuels: 2001012823",
-            "travail_temps_partiel: 1987012264",
-            "code_droit_economique: 2013009743",
-            "droit_auteur: 1994022068",
-            "procedure_penale: 1878032650",
-            "cir92: 1992003206",
-            "tva: 1969071701",
-            "securite_sociale: 1969062710",
-            "assurance_chomage: 1944122850",
-            "bail_habitation: 2017205781",
-            "bail_commercial: 1951121401",
-        ],
         "lois_dans_dictionnaire": len(LOIS_CONNUES)
     }
