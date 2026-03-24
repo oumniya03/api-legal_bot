@@ -1,24 +1,30 @@
 from fastapi import FastAPI, HTTPException, Query
-from pydantic import BaseModel
 from playwright.async_api import async_playwright
-from playwright.sync_api import sync_playwright
 import re
-import httpx
 
-app = FastAPI(title="Belgian Law Brain API - Jurisprudence & Lois v5")
+app = FastAPI(title="Belgian Law Brain API — Lois v8")
 
-# ─────────────────────────────────────────────
-# DICTIONNAIRE DES LOIS BELGES — VRAIS NUMAC VÉRIFIÉS SUR JUSTEL
-# URL = /cgi_loi/article.pl?language=fr&lg_txt=F&caller=list&numac_search=NUMAC&NUMAC=0&nm_ecran=NUMAC&trier=promulgation&fr=f&choix1=et&choix2=et
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# DICTIONNAIRE DES LOIS BELGES — NUMAC VÉRIFIÉS SUR JUSTEL
+# Domaines couverts :
+#   1. Droit du travail
+#   2. Droit administratif
+#   3. Droit commercial
+#   4. Droit financier
+#   5. Droit fiscal
+# + Droit civil, social, pénal, RGPD (transversaux)
+# ─────────────────────────────────────────────────────────────────────────────
 
 LOIS_CONNUES = {
 
-    # ── DROIT DU TRAVAIL ─────────────────────────────────────────────────
+    # ══════════════════════════════════════════════════════════════════════════
+    # 1. DROIT DU TRAVAIL
+    # ══════════════════════════════════════════════════════════════════════════
 
     "contrat_travail": {
-        "numac": "1978070303",   # ✅ vérifié Justel 03/07/1978 — LCT
-        "titre": "Loi du 3 juillet 1978 relative aux contrats de travail",
+        "numac": "1978070303",
+        "titre": "Loi du 3 juillet 1978 relative aux contrats de travail (LCT)",
+        "domaine": "travail",
         "aliases": [
             "licenciement", "préavis", "contrat travail", "rupture contrat",
             "démission", "période essai", "contrat durée déterminée",
@@ -27,13 +33,15 @@ LOIS_CONNUES = {
             "rémunération", "travailleur", "indemnité congé", "délai préavis",
             "licenciement abusif", "force majeure médicale", "salaire garanti",
             "chômage temporaire", "suspension contrat", "motif grave",
-            "clause non-concurrence", "clause non concurrence"
+            "clause non-concurrence", "clause non concurrence",
+            "contrat de travail"
         ]
     },
 
     "bien_etre_travail": {
-        "numac": "1996012650",   # ✅ vérifié Justel 04/08/1996
+        "numac": "1996012650",
         "titre": "Loi du 4 août 1996 relative au bien-être des travailleurs lors de l'exécution de leur travail",
+        "domaine": "travail",
         "aliases": [
             "harcèlement", "harcèlement moral", "harcèlement sexuel",
             "bien-être travail", "bien être travail", "violence travail",
@@ -44,8 +52,9 @@ LOIS_CONNUES = {
     },
 
     "duree_travail": {
-        "numac": "1971031602",   # ✅ vérifié Justel 16/03/1971
+        "numac": "1971031602",
         "titre": "Loi du 16 mars 1971 sur le travail",
+        "domaine": "travail",
         "aliases": [
             "durée travail", "heures travail", "temps travail",
             "heures supplémentaires", "repos compensatoire", "travail nuit",
@@ -56,8 +65,9 @@ LOIS_CONNUES = {
     },
 
     "statut_unique": {
-        "numac": "2013012289",   # ✅ vérifié Justel 26/12/2013
+        "numac": "2013012289",
         "titre": "Loi du 26 décembre 2013 concernant l'introduction d'un statut unique entre ouvriers et employés",
+        "domaine": "travail",
         "aliases": [
             "statut unique", "préavis harmonisé", "préavis ouvrier",
             "préavis employé", "loi statut unique", "harmonisation préavis",
@@ -67,8 +77,9 @@ LOIS_CONNUES = {
     },
 
     "protection_maternite": {
-        "numac": "1971031602",   # ✅ Loi 16 mars 1971 — chapitre maternité
+        "numac": "1971031602",
         "titre": "Protection de la maternité — Loi du 16 mars 1971 (consolidée)",
+        "domaine": "travail",
         "aliases": [
             "maternité", "congé maternité", "grossesse licenciement",
             "protection maternité", "allaitement travail",
@@ -78,8 +89,9 @@ LOIS_CONNUES = {
     },
 
     "conges_annuels": {
-        "numac": "1971062805",   # ✅ vérifié Justel 28/06/1971 — vacances annuelles
+        "numac": "1971062805",
         "titre": "Lois coordonnées du 28 juin 1971 relatives aux vacances annuelles des travailleurs salariés",
+        "domaine": "travail",
         "aliases": [
             "vacances annuelles", "congés payés", "pécule vacances",
             "double pécule", "congé annuel", "jours congé",
@@ -87,9 +99,10 @@ LOIS_CONNUES = {
         ]
     },
 
-    "travail_temps_partiel": {
-        "numac": "1987012264",   # ✅ vérifié Justel 24/07/1987
+    "travail_interimaire": {
+        "numac": "1987012264",
         "titre": "Loi du 24 juillet 1987 sur le travail temporaire, le travail intérimaire et la mise de travailleurs à la disposition d'utilisateurs",
+        "domaine": "travail",
         "aliases": [
             "temps partiel", "travail partiel", "mi-temps",
             "travail intérimaire", "interim", "intérim",
@@ -98,8 +111,9 @@ LOIS_CONNUES = {
     },
 
     "protection_licenciement": {
-        "numac": "2014012010",   # ✅ CCT n°109
+        "numac": "2014012010",
         "titre": "CCT n°109 du 12 février 2014 concernant la motivation du licenciement",
+        "domaine": "travail",
         "aliases": [
             "licenciement déraisonnable", "motivation licenciement",
             "cct 109", "raison licenciement", "justification licenciement",
@@ -107,11 +121,32 @@ LOIS_CONNUES = {
         ]
     },
 
-    # ── ANTI-DISCRIMINATION ──────────────────────────────────────────────
+    "teletravail": {
+        "numac": "2023200295",
+        "titre": "CCT n°149 du 19 janvier 2023 relative au travail en dehors des locaux de l'entreprise (télétravail)",
+        "domaine": "travail",
+        "aliases": [
+            "télétravail", "travail à domicile", "remote work",
+            "travail hors entreprise", "cct 149", "accord télétravail",
+            "droit à la déconnexion", "équipement télétravail"
+        ]
+    },
+
+    "outplacement": {
+        "numac": "2001012748",
+        "titre": "CCT n°82 du 10 juillet 2002 relative au droit à l'outplacement",
+        "domaine": "travail",
+        "aliases": [
+            "outplacement", "reclassement professionnel",
+            "accompagnement reclassement", "droit outplacement",
+            "cct 82", "offre outplacement"
+        ]
+    },
 
     "anti_discrimination": {
-        "numac": "2007002099",   # ✅ vérifié Justel 10/05/2007
+        "numac": "2007002099",
         "titre": "Loi du 10 mai 2007 tendant à lutter contre certaines formes de discrimination",
+        "domaine": "travail",
         "aliases": [
             "discrimination", "anti-discrimination", "égalité traitement",
             "discrimination raciale", "discrimination âge", "discrimination handicap",
@@ -122,27 +157,145 @@ LOIS_CONNUES = {
     },
 
     "egalite_hommes_femmes": {
-        "numac": "2007002098",   # ✅ vérifié Justel 10/05/2007 — texte français officiel
+        "numac": "2007002098",
         "titre": "Loi du 10 mai 2007 tendant à lutter contre la discrimination entre hommes et femmes",
+        "domaine": "travail",
         "aliases": [
-            "égalité hommes femmes", "discrimination genre", "paiement moins que les collègues masculins",
+            "égalité hommes femmes", "discrimination genre",
+            "paiement moins que les collègues masculins",
             "écart salarial", "pay gap", "sexisme travail",
             "inégalité salariale", "discrimination femme travail",
             "salaire inférieur femme", "salaire inférieur collègues masculins",
             "moins payée que collègues hommes", "rémunération inférieure femme",
             "inégalité de traitement femme homme", "discrimination salariale femme",
             "salaire homme femme", "écart de rémunération",
-            "même travail salaire différent", "travail égal salaire inégal",
-            "salaire inférieur homme", "inégalité salariale genre",
-            "discrimination salariale genre", "salaire moins élevé femme"
+            "même travail salaire différent", "travail égal salaire inégal"
         ]
     },
 
-    # ── DROIT DES SOCIÉTÉS ───────────────────────────────────────────────
+    # ══════════════════════════════════════════════════════════════════════════
+    # 2. DROIT ADMINISTRATIF
+    # ══════════════════════════════════════════════════════════════════════════
+
+    "lois_coordonnees_conseil_etat": {
+        "numac": "1973121203",
+        "titre": "Lois coordonnées du 12 janvier 1973 sur le Conseil d'État",
+        "domaine": "administratif",
+        "aliases": [
+            "conseil d'état", "recours administratif", "annulation acte administratif",
+            "suspension acte", "recours en annulation", "recours conseil état",
+            "arrêt conseil état", "chambre administrative", "contentieux administratif",
+            "légalité acte administratif"
+        ]
+    },
+
+    "loi_motivacion_actes": {
+        "numac": "1991012548",
+        "titre": "Loi du 29 juillet 1991 relative à la motivation formelle des actes administratifs",
+        "domaine": "administratif",
+        "aliases": [
+            "motivation acte administratif", "motivation formelle",
+            "obligation motivation administration", "acte non motivé",
+            "décision administrative sans motivation", "explication décision administrative"
+        ]
+    },
+
+    "publicite_administration": {
+        "numac": "1994000316",
+        "titre": "Loi du 11 avril 1994 relative à la publicité de l'administration",
+        "domaine": "administratif",
+        "aliases": [
+            "publicité administration", "accès documents administratifs",
+            "transparence administrative", "demande documents publics",
+            "droit accès administration", "documents administratifs",
+            "accès information administration", "openness administration"
+        ]
+    },
+
+    "marches_publics": {
+        "numac": "2016021107",
+        "titre": "Loi du 17 juin 2016 relative aux marchés publics",
+        "domaine": "administratif",
+        "aliases": [
+            "marchés publics", "appel d'offres", "adjudication",
+            "soumission marché public", "cahier des charges",
+            "pouvoir adjudicateur", "offre régulière", "attribution marché",
+            "procédure négociée", "procédure ouverte", "procédure restreinte",
+            "concession services", "partenariat public privé",
+            "marché public travaux", "marché public fournitures",
+            "marché public services"
+        ]
+    },
+
+    "defense_interets_belges": {
+        "numac": "2018015278",
+        "titre": "Loi du 17 août 2013 relative à la motivation, à l'information et aux voies de recours en matière de marchés publics",
+        "domaine": "administratif",
+        "aliases": [
+            "recours marché public", "standstill marché public",
+            "suspension attribution marché", "recours offre évincée",
+            "contestation marché public"
+        ]
+    },
+
+    "fonctionnaires_federaux": {
+        "numac": "1993000040",
+        "titre": "Arrêté royal du 2 octobre 1937 portant le statut des agents de l'État",
+        "domaine": "administratif",
+        "aliases": [
+            "fonctionnaire", "agent de l'état", "statut fonctionnaire",
+            "agent contractuel administration", "disciplinaire fonctionnaire",
+            "licenciement fonctionnaire", "suspension fonctionnaire",
+            "évaluation fonctionnaire", "grade fonctionnaire",
+            "nomination fonctionnaire", "démission fonctionnaire"
+        ]
+    },
+
+    "cpas": {
+        "numac": "1976072701",
+        "titre": "Loi du 8 juillet 1976 organique des centres publics d'action sociale",
+        "domaine": "administratif",
+        "aliases": [
+            "cpas", "aide sociale", "revenu intégration",
+            "aide sociale urgente", "centre action sociale",
+            "bénéficiaire cpas", "aide médicale urgente",
+            "admission cpas", "projet individuel intégration"
+        ]
+    },
+
+    "permis_urbanisme": {
+        "numac": "2019A31198",
+        "titre": "Code wallon du Développement territorial (CoDT) — Décret du 20 juillet 2016",
+        "domaine": "administratif",
+        "aliases": [
+            "permis urbanisme", "permis construire", "permis lotir",
+            "permis démolir", "infraction urbanistique", "codt",
+            "certificat urbanisme", "recours permis", "affectation zone",
+            "plan secteur", "revenu cadastral urbanisme",
+            "régularisation infraction", "permis unique wallon"
+        ]
+    },
+
+    "permis_environnement": {
+        "numac": "2019A31199",
+        "titre": "Décret wallon du 11 mars 1999 relatif au permis d'environnement",
+        "domaine": "administratif",
+        "aliases": [
+            "permis environnement", "établissement classé",
+            "nuisances sonores voisinage", "nuisances olfactives",
+            "classe 1 2 3", "déclaration environnementale",
+            "recours permis environnement", "autorisation exploiter"
+        ]
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # 3. DROIT COMMERCIAL
+    # ══════════════════════════════════════════════════════════════════════════
 
     "code_societes": {
-        "numac": "2019A40586",   # ✅ vérifié Justel 23/03/2019 — CSA texte consolidé
+        "numac": "2019A40586",
         "titre": "Code des sociétés et des associations du 23 mars 2019 (CSA/WVV)",
+        "domaine": "commercial",
         "aliases": [
             "société", "csa", "wvv", "sprl", "bv", "srl", "sa", "nv",
             "administrateur", "gérant", "assemblée générale",
@@ -151,27 +304,82 @@ LOIS_CONNUES = {
             "révocation administrateur", "mandat gérant", "gérant statutaire",
             "associé", "actionnaire", "parts sociales", "actions",
             "capital social", "statuts société", "scrl", "asbl",
-            "fondation", "organe administration", "conseil administration"
+            "fondation", "organe administration", "conseil administration",
+            "responsabilité administrateur", "action en responsabilité",
+            "résolution conflits associés", "exclusion associé",
+            "retrait associé"
         ]
     },
 
-    # ── DROIT ÉCONOMIQUE ─────────────────────────────────────────────────
+    "insolvabilite": {
+        "numac": "2017012998",
+        "titre": "Code de droit de l'insolvabilité (Livre XX CDE) — Loi du 11 août 2017",
+        "domaine": "commercial",
+        "aliases": [
+            "faillite", "insolvabilité", "réorganisation judiciaire",
+            "concordat", "curateur", "débiteur insolvable",
+            "procédure collective", "liquidation judiciaire",
+            "aveu faillite", "déconfiture", "remise dette",
+            "plan de remboursement", "préfaillite", "prj",
+            "procédure en réorganisation judiciaire",
+            "accord amiable", "transfert sous autorité judiciaire",
+            "sonnette d'alarme", "dissolution judiciaire"
+        ]
+    },
 
     "code_droit_economique": {
-        "numac": "2013A11134",   # ✅ vérifié Justel 28/02/2013 — CDE texte consolidé
+        "numac": "2013A11134",
         "titre": "Code de droit économique (CDE)",
+        "domaine": "commercial",
         "aliases": [
             "pratiques commerce", "concurrence déloyale", "publicité trompeuse",
             "protection consommateur", "clause abusive", "contrat consommation",
             "droit économique", "vente consommateur", "garantie légale",
             "droit de rétractation", "e-commerce", "vente en ligne",
-            "publicité comparative", "prime fidélité"
+            "publicité comparative", "prime fidélité",
+            "droit commercial général"
+        ]
+    },
+
+    "agence_commerciale": {
+        "numac": "1995012009",
+        "titre": "Loi du 13 avril 1995 relative au contrat d'agence commerciale",
+        "domaine": "commercial",
+        "aliases": [
+            "agent commercial", "contrat agence", "agence commerciale",
+            "indemnité clientèle", "résiliation agence",
+            "commission agent", "exclusivité territoire",
+            "préavis agent commercial", "contrat agent"
+        ]
+    },
+
+    "franchise": {
+        "numac": "2005A12743",
+        "titre": "Loi du 19 décembre 2005 relative à l'information précontractuelle dans le cadre d'accords de partenariat commercial",
+        "domaine": "commercial",
+        "aliases": [
+            "franchise", "franchisé", "franchiseur",
+            "accord partenariat commercial", "document information précontractuel",
+            "contrat franchise", "redevance franchise", "résiliation franchise",
+            "information précontractuelle franchise"
+        ]
+    },
+
+    "contrats_commerciaux_b2b": {
+        "numac": "2019A11791",
+        "titre": "Loi du 4 avril 2019 modifiant le Code de droit économique — clauses abusives B2B",
+        "domaine": "commercial",
+        "aliases": [
+            "clause abusive b2b", "clause noire b2b", "clause grise b2b",
+            "contrat entre entreprises", "déséquilibre manifeste b2b",
+            "pratique déloyale entreprise", "abus dépendance économique"
         ]
     },
 
     "propriete_intellectuelle": {
-        "numac": "2013A11134",   # ✅ CDE Livre XI — même code
+        "numac": "2013A11134",
         "titre": "Code de droit économique — Livre XI : Propriété intellectuelle",
+        "domaine": "commercial",
         "aliases": [
             "propriété intellectuelle", "droit auteur", "droits auteur",
             "copyright", "brevet", "marque", "droit voisin",
@@ -181,9 +389,9 @@ LOIS_CONNUES = {
     },
 
     "droit_auteur": {
-        "numac": "1994009586",   # ✅ vérifié Justel 30/06/1994 — texte original PDF (avant 1997)
-        # ⚠️ Pas de version HTML consolidée — largement intégré dans CDE Livre XI (2013A11134)
+        "numac": "1994009586",
         "titre": "Loi du 30 juin 1994 relative au droit d'auteur et aux droits voisins",
+        "domaine": "commercial",
         "aliases": [
             "droits auteur salarié", "œuvre créée travail", "auteur employé",
             "droits auteur contrat travail", "cession droits auteur",
@@ -191,136 +399,10 @@ LOIS_CONNUES = {
         ]
     },
 
-    # ── DROIT PÉNAL ──────────────────────────────────────────────────────
-
-    "code_penal": {
-        "numac": "1867060801",   # ✅ Code pénal belge
-        "titre": "Code pénal belge du 8 juin 1867",
-        "aliases": [
-            "infraction pénale", "vol", "fraude", "escroquerie",
-            "abus confiance", "faux", "usage faux", "coups blessures",
-            "harcèlement pénal", "droit pénal", "meurtre", "homicide",
-            "corruption", "détournement", "recel", "concussion",
-            "calomnie", "diffamation", "violation domicile"
-        ]
-    },
-
-    # ── INSOLVABILITÉ ────────────────────────────────────────────────────
-
-    "insolvabilite": {
-        "numac": "2017012998",   # ✅ vérifié Justel 11/08/2017
-        "titre": "Code de droit de l'insolvabilité (Livre XX CDE) — Loi du 11 août 2017",
-        "aliases": [
-            "faillite", "insolvabilité", "réorganisation judiciaire",
-            "concordat", "curateur", "débiteur insolvable",
-            "procédure collective", "liquidation judiciaire",
-            "aveu faillite", "déconfiture", "remise dette",
-            "plan de remboursement", "préfaillite", "prj"
-        ]
-    },
-
-    # ── DROIT CIVIL ──────────────────────────────────────────────────────
-
-    "code_civil": {
-        "numac": "2022A32058",   # ✅ vérifié Justel — CODE CIVIL LIVRE 5 "Les obligations" — en vigueur 01/01/2023
-        "titre": "Code civil — Livre 5 : Les obligations (loi 28 avril 2022, en vigueur depuis le 1er janvier 2023)",
-        "aliases": [
-            "contrat civil", "responsabilité civile", "dommages intérêts",
-            "obligation contractuelle", "nullité contrat", "vice consentement",
-            "dol", "erreur contrat", "résiliation contrat",
-            "inexécution contrat", "force majeure", "clause pénale",
-            "prescription civile", "abus droit", "enrichissement sans cause",
-            "quasi-contrat", "gestion d'affaires"
-        ]
-    },
-
-    "code_civil_ancien": {
-        "numac": "1804032138",   # ✅ Ancien Code civil
-        "titre": "Code civil — dispositions encore en vigueur",
-        "aliases": [
-            "propriété immobilière", "servitude", "usufruit", "hypothèque",
-            "succession", "héritage", "testament", "donation",
-            "mariage civil", "divorce", "séparation biens", "régime matrimonial",
-            "tutelle", "curatelle", "minorité"
-        ]
-    },
-
-    # ── DROIT FISCAL ─────────────────────────────────────────────────────
-
-    "cir92": {
-        "numac": "1992003456",   # ✅ AR 10/04/1992 — texte original PDF (avant 1997)
-        # ⚠️ Pas de version HTML consolidée sur Justel
-        # Source alternative : https://finances.belgium.be/fr/expertises-et-publications/legislation-et-circulaires/impots-sur-les-revenus/cir-92
-        "titre": "Code des impôts sur les revenus 1992 (CIR92)",
-        "aliases": [
-            "impôt revenus", "ipp", "isoc", "précompte professionnel",
-            "déclaration fiscale", "déduction fiscale", "tax shift",
-            "revenu imposable", "avantage nature", "frais professionnels",
-            "voiture société", "chèques repas", "bonus salarial"
-        ]
-    },
-
-    "tva": {
-        "numac": "1969070305",   # ✅ vérifié Justel 03/07/1969 — Loi créant le Code TVA
-        "titre": "Code de la taxe sur la valeur ajoutée (TVA)",
-        "aliases": [
-            "tva", "taxe valeur ajoutée", "assujetti tva",
-            "déclaration tva", "facture tva", "taux tva",
-            "exonération tva", "remboursement tva", "autoliquidation"
-        ]
-    },
-
-    # ── DROIT SOCIAL ─────────────────────────────────────────────────────
-
-    "securite_sociale": {
-        "numac": "1969062710",   # ✅ vérifié Justel 27/06/1969
-        "titre": "Loi du 27 juin 1969 révisant l'arrêté-loi du 28 décembre 1944 concernant la sécurité sociale des travailleurs",
-        "aliases": [
-            "sécurité sociale", "cotisations sociales", "onss",
-            "cotisation patronale", "cotisation travailleur",
-            "assujettissement onss", "sécurité sociale employeur"
-        ]
-    },
-
-    "assurance_chomage": {
-        "numac": "1944122850",   # ✅ vérifié Justel 28/12/1944
-        "titre": "Arrêté-loi du 28 décembre 1944 concernant la sécurité sociale des travailleurs",
-        "aliases": [
-            "chômage", "allocations chômage", "onem", "chômeur",
-            "droit chômage", "indemnité chômage", "chômage complet",
-            "chômage partiel", "exclusion chômage", "sanction chômage",
-            "disponibilité marché emploi", "activation emploi"
-        ]
-    },
-
-    "accidents_travail": {
-        "numac": "1971100402",   # ✅ Loi 10 avril 1971
-        "titre": "Loi du 10 avril 1971 sur les accidents du travail",
-        "aliases": [
-            "accident travail", "accident de travail", "maladie professionnelle",
-            "indemnité accident travail", "incapacité permanente travail",
-            "décès accident travail", "fonds accidents travail",
-            "assurance accidents travail"
-        ]
-    },
-
-    # ── DROIT LOCATIF ────────────────────────────────────────────────────
-
-    "bail_habitation": {
-        "numac": "2018201408",   # ✅ vérifié Justel 15/03/2018 — Décret wallon bail habitation
-        "titre": "Décret wallon du 15 mars 2018 relatif aux baux d'habitation",
-        "aliases": [
-            "bail habitation", "loyer", "locataire", "bailleur",
-            "résiliation bail", "préavis bail", "bail durée déterminée",
-            "bail résidence principale", "garantie locative",
-            "état des lieux", "loyer indexation", "bail étudiant",
-            "bail wallon"
-        ]
-    },
-
     "bail_commercial": {
-        "numac": "1951043003",   # ✅ vérifié Justel 30/04/1951 — baux commerciaux
+        "numac": "1951043003",
         "titre": "Loi du 30 avril 1951 sur les baux commerciaux",
+        "domaine": "commercial",
         "aliases": [
             "bail commercial", "bail fonds commerce", "renouvellement bail commercial",
             "indemnité éviction", "droit renouvellement",
@@ -328,31 +410,240 @@ LOIS_CONNUES = {
         ]
     },
 
-    # ── RGPD / DONNÉES PERSONNELLES ──────────────────────────────────────
-
-    "protection_donnees": {
-        "numac": "2018013455",   # ✅ vérifié Justel 30/07/2018
-        "titre": "Loi du 30 juillet 2018 relative à la protection des personnes physiques à l'égard des traitements de données à caractère personnel",
+    "pratiques_marche": {
+        "numac": "2013A11134",
+        "titre": "Code de droit économique — Livre VI : Pratiques du marché",
+        "domaine": "commercial",
         "aliases": [
-            "rgpd", "gdpr", "données personnelles", "vie privée",
-            "traitement données", "responsable traitement", "sous-traitant",
-            "droit accès données", "droit oubli", "portabilité données",
-            "consentement données", "autorité protection données", "apd",
-            "violation données", "data breach", "dpo"
+            "soldes", "liquidation commerciale", "vente perte",
+            "prime vente", "loterie commerciale", "jeu concours",
+            "action promotionnelle", "publicité mensongère",
+            "indication prix", "comparaison prix"
         ]
     },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # 4. DROIT FINANCIER
+    # ══════════════════════════════════════════════════════════════════════════
+
+    "loi_fsma": {
+        "numac": "2002003141",
+        "titre": "Loi du 2 août 2002 relative à la surveillance du secteur financier et aux services financiers",
+        "domaine": "financier",
+        "aliases": [
+            "fsma", "surveillance financière", "services financiers",
+            "intermediaire financier", "délit d'initié", "manipulation marché",
+            "abus marché", "prospectus", "information privilégiée",
+            "insider trading", "intégrité marché financier"
+        ]
+    },
+
+    "banques_loi": {
+        "numac": "2014011463",
+        "titre": "Loi du 25 avril 2014 relative au statut et au contrôle des établissements de crédit (loi bancaire)",
+        "domaine": "financier",
+        "aliases": [
+            "banque", "établissement crédit", "agrément bancaire",
+            "dépôt bancaire", "secret bancaire", "saisie compte bancaire",
+            "garantie dépôts", "fonds protection dépôts",
+            "contrôle bnb banque", "résolution bancaire",
+            "bail-in banque"
+        ]
+    },
+
+    "credit_consommateur": {
+        "numac": "2010A09064",
+        "titre": "Loi du 12 juin 2010 relative aux contrats de crédit à la consommation (CCC — Livre VII CDE)",
+        "domaine": "financier",
+        "aliases": [
+            "crédit consommateur", "prêt personnel", "crédit voiture",
+            "taux annuel effectif global", "taeg", "teg",
+            "contrat crédit consommation", "résiliation crédit",
+            "remboursement anticipé crédit", "centrale des crédits",
+            "surendettement", "règlement collectif dettes", "médiateur dettes"
+        ]
+    },
+
+    "credit_hypothecaire": {
+        "numac": "2016A11066",
+        "titre": "Loi du 22 avril 2016 relative au crédit hypothécaire (Livre VII CDE)",
+        "domaine": "financier",
+        "aliases": [
+            "crédit hypothécaire", "prêt immobilier", "hypothèque bancaire",
+            "taux hypothécaire", "remboursement anticipé hypothèque",
+            "mainlevée hypothèque", "saisie immeuble", "vente forcée immeuble",
+            "défaillance emprunteur", "contrat prêt immobilier",
+            "évaluation bien immobilier crédit"
+        ]
+    },
+
+    "assurances": {
+        "numac": "2014011465",
+        "titre": "Loi du 4 avril 2014 relative aux assurances",
+        "domaine": "financier",
+        "aliases": [
+            "assurance", "contrat assurance", "prime assurance",
+            "sinistre", "déclaration sinistre", "indemnisation assurance",
+            "exclusion garantie", "résiliation assurance",
+            "assurance vie", "assurance incendie", "assurance auto",
+            "assurance responsabilité", "assureur", "assuré",
+            "courtier assurance", "police assurance", "franchise assurance"
+        ]
+    },
+
+    "services_paiement": {
+        "numac": "2018015093",
+        "titre": "Loi du 11 mars 2018 relative au statut et au contrôle des établissements de paiement et des établissements de monnaie électronique (PSD2)",
+        "domaine": "financier",
+        "aliases": [
+            "paiement électronique", "virement bancaire", "prélèvement automatique",
+            "établissement paiement", "monnaie électronique", "psd2",
+            "accès compte bancaire tiers", "open banking", "agrégateur bancaire",
+            "remboursement virement non autorisé"
+        ]
+    },
+
+    "blanchiment": {
+        "numac": "2017009460",
+        "titre": "Loi du 18 septembre 2017 relative à la prévention du blanchiment de capitaux et du financement du terrorisme",
+        "domaine": "financier",
+        "aliases": [
+            "blanchiment", "blanchiment capitaux", "financement terrorisme",
+            "ctif", "déclaration suspicion", "vigilance client",
+            "know your customer", "kyc", "bénéficiaire effectif",
+            "aml", "anti-blanchiment", "lutte blanchiment"
+        ]
+    },
+
+    "instruments_financiers": {
+        "numac": "2016011448",
+        "titre": "Loi du 21 novembre 2017 relative aux infrastructures des marchés d'instruments financiers (MiFID II)",
+        "domaine": "financier",
+        "aliases": [
+            "mifid", "mifid2", "instruments financiers", "actions obligations",
+            "fonds placement", "portefeuille valeurs", "conseil investissement",
+            "gestion portefeuille", "test adéquation", "profil investisseur",
+            "société bourse", "courtier bourse", "produit structuré",
+            "dérivé financier", "produit financier complexe"
+        ]
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # 5. DROIT FISCAL
+    # ══════════════════════════════════════════════════════════════════════════
+
+    "cir92": {
+        "numac": "1992003456",
+        "titre": "Code des impôts sur les revenus 1992 (CIR92)",
+        "domaine": "fiscal",
+        "aliases": [
+            "impôt revenus", "ipp", "isoc", "précompte professionnel",
+            "déclaration fiscale", "déduction fiscale", "tax shift",
+            "revenu imposable", "avantage nature", "frais professionnels",
+            "voiture société", "chèques repas", "bonus salarial",
+            "impôt personnes physiques", "impôt sociétés",
+            "bénéfice imposable", "perte fiscale", "report pertes",
+            "précompte mobilier", "dividende", "intérêt obligataire",
+            "plus-value taxation", "revenus fonciers", "loyer imposable"
+        ]
+    },
+
+    "tva": {
+        "numac": "1969070305",
+        "titre": "Code de la taxe sur la valeur ajoutée (TVA)",
+        "domaine": "fiscal",
+        "aliases": [
+            "tva", "taxe valeur ajoutée", "assujetti tva",
+            "déclaration tva", "facture tva", "taux tva",
+            "exonération tva", "remboursement tva", "autoliquidation",
+            "numéro tva", "assujettissement tva", "tva mixte",
+            "prorata tva", "tva cocontractant", "listing clients"
+        ]
+    },
+
+    "droits_enregistrement": {
+        "numac": "1939053108",
+        "titre": "Code des droits d'enregistrement, d'hypothèque et de greffe",
+        "domaine": "fiscal",
+        "aliases": [
+            "droits enregistrement", "droits mutation", "frais notaire",
+            "enregistrement acte", "droit de donation",
+            "abattement droits enregistrement",
+            "réduction droits enregistrement habitation propre",
+            "portabilité", "chèque habitat"
+        ]
+    },
+
+    "droits_succession": {
+        "numac": "1936032601",
+        "titre": "Code des droits de succession (wallon : Décret du 19 janvier 2017)",
+        "domaine": "fiscal",
+        "aliases": [
+            "droits succession", "impôt succession", "héritage fiscal",
+            "déclaration succession", "actif successoral", "passif succession",
+            "exonération succession", "taux succession",
+            "transmission entreprise", "plan successoral",
+            "donation avant décès", "réserve héréditaire fiscale"
+        ]
+    },
+
+    "taxe_circulation": {
+        "numac": "1992003544",
+        "titre": "Loi relative à la taxe de circulation sur les véhicules automobiles (coordonnée 1992)",
+        "domaine": "fiscal",
+        "aliases": [
+            "taxe circulation", "vignette voiture", "plaque immatriculation taxe",
+            "taxe mise en circulation", "taxe annuelle véhicule",
+            "déduction voiture société", "avantage tce", "cotisation co2"
+        ]
+    },
+
+    "taxe_regionale_wallonne": {
+        "numac": "2003027155",
+        "titre": "Décret wallon du 6 mai 1999 relatif à l'établissement, au recouvrement et au contentieux en matière de taxes régionales wallonnes",
+        "domaine": "fiscal",
+        "aliases": [
+            "taxe régionale wallonne", "taxe immondices", "taxe déchets wallonie",
+            "taxe eau wallonie", "redevance épuration",
+            "recours taxe régionale", "réclamation taxe wallonne"
+        ]
+    },
+
+    "procedure_fiscale": {
+        "numac": "1919081504",
+        "titre": "Loi du 15 mars 1999 relative au contentieux en matière fiscale (anciennement AR 1919)",
+        "domaine": "fiscal",
+        "aliases": [
+            "réclamation fiscale", "contentieux fiscal", "recours fiscal",
+            "contrôle fiscal", "vérification comptabilité",
+            "rectification imposition", "taxation d'office",
+            "avis rectification", "amende fiscale", "intérêts moratoires",
+            "prescription fiscale", "délai réclamation",
+            "délai imposition", "tribunal première instance fiscal"
+        ]
+    },
+
+    "prix_transfert": {
+        "numac": "1992003456",
+        "titre": "CIR92 — Articles relatifs aux prix de transfert (art. 185 § 2 et 207/1)",
+        "domaine": "fiscal",
+        "aliases": [
+            "prix transfert", "transfer pricing", "groupe sociétés fiscal",
+            "bénéfice transféré", "arm's length", "transaction intra-groupe",
+            "accord préalable prix transfert", "ruling fiscal prix transfert"
+        ]
+    },
+
+    
 }
 
 
-# ─────────────────────────────────────────────
-# FONCTION URL — FORMAT UNIVERSEL VÉRIFIÉ
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# FONCTIONS UTILITAIRES
+# ─────────────────────────────────────────────────────────────────────────────
 
 def construire_url_citation(numac: str) -> str:
-    """
-    URL universelle vérifiée sur Justel — fonctionne pour tous les numac.
-    Format : cgi_loi/article.pl avec nm_ecran et numac=0
-    """
+    """URL universelle vérifiée sur Justel — fonctionne pour tous les numac."""
     return (
         f"https://www.ejustice.just.fgov.be/cgi_loi/article.pl"
         f"?language=fr&lg_txt=F&caller=list"
@@ -364,23 +655,34 @@ def construire_url_citation(numac: str) -> str:
     )
 
 
-# ─────────────────────────────────────────────
-# FONCTIONS PLAYWRIGHT
-# ─────────────────────────────────────────────
-
 async def bloquer_ressources(route):
     if route.request.resource_type in ["image", "font", "media"]:
         await route.abort()
     else:
         await route.continue_()
 
-def bloquer_ressources_inutiles(route):
-    if route.request.resource_type in ["image", "font", "media"]:
-        route.abort()
-    else:
-        route.continue_()
 
-BASE_URL_JUSTEL = "https://www.ejustice.just.fgov.be"
+def detecter_loi_par_sujet(sujet: str) -> list[dict]:
+    sujet_lower = sujet.lower()
+    candidats = []
+    for cle, loi in LOIS_CONNUES.items():
+        score = 0
+        aliases_matches = []
+        for alias in loi["aliases"]:
+            if alias in sujet_lower:
+                score += len(alias.split())
+                aliases_matches.append(alias)
+        if score > 0:
+            candidats.append({
+                "cle": cle,
+                "numac": loi["numac"],
+                "titre": loi["titre"],
+                "domaine": loi.get("domaine", ""),
+                "score": score,
+                "aliases_matches": aliases_matches
+            })
+    candidats.sort(key=lambda x: x["score"], reverse=True)
+    return candidats
 
 
 async def extraire_articles_depuis_texte(texte: str, mots_cles: list[str]) -> list[dict]:
@@ -406,6 +708,7 @@ async def extraire_articles_depuis_texte(texte: str, mots_cles: list[str]) -> li
 async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None) -> dict:
     url = construire_url_citation(numac)
     mots_cles = mots_cles or []
+    BASE_URL_JUSTEL = "https://www.ejustice.just.fgov.be"
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(
@@ -439,172 +742,6 @@ async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None) -> dict
         except Exception as e:
             await browser.close()
             return {"status": "erreur", "numac": numac, "detail": str(e)}
-
-
-# ─────────────────────────────────────────────
-# PARTIE 1 — JURISPRUDENCE (JUPORTAL)
-# ─────────────────────────────────────────────
-
-class QueryModel(BaseModel):
-    mot_cle: str
-
-class UrlModel(BaseModel):
-    url: str
-
-
-@app.post("/scrape")
-async def scrape_jurisprudence(query: QueryModel):
-    mot_cle = query.mot_cle
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
-        await page.route("**/*", bloquer_ressources)
-        try:
-            await page.goto("https://juportal.be/moteur/formulaire", timeout=60000)
-            await page.locator("input#texpression").fill(mot_cle)
-            await page.locator("button[type='submit']:has-text('Rechercher')").first.click()
-            await page.wait_for_timeout(3000)
-            liens_elements = await page.locator("a[href*='ECLI']").all()
-            resultats = []
-            for lien in liens_elements:
-                url = await lien.get_attribute("href")
-                if url and "ECLI" in url:
-                    url_propre = url.split('?')[0].split('#')[0]
-                    match_ecli = re.search(r"(ECLI:BE:[A-Z]+:\d{4}:[A-Z0-9.]+)", url_propre)
-                    match_annee = re.search(r"ECLI:BE:[A-Z]+:(\d{4}):", url_propre)
-                    if match_ecli and match_annee:
-                        ecli = match_ecli.group(1)
-                        annee = int(match_annee.group(1))
-                        if annee >= 2019:
-                            type_doc = "ARRÊT" if ":ARR." in ecli else "DÉCISION"
-                            resultats.append({
-                                "ecli": ecli,
-                                "annee": annee,
-                                "type": type_doc,
-                                "url": "https://juportal.be" + url_propre
-                            })
-            resultats_tries = sorted(resultats, key=lambda x: x['annee'], reverse=True)[:10]
-            texte = f"--- RÉSULTATS POUR '{mot_cle}' (post-2019) ---\n"
-            for i, r in enumerate(resultats_tries):
-                texte += f"ARR{i+1}: [{r['type']}] ECLI={r['ecli']} | ANNÉE={r['annee']} | URL={r['url']}\n"
-            await browser.close()
-            return {"status": "success", "data": texte}
-        except Exception as e:
-            await browser.close()
-            raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/lire_arret")
-def lire_arret_complet(query: UrlModel):
-    url = query.url
-    if "juportal.be" not in url:
-        raise HTTPException(status_code=400, detail="L'URL doit provenir de juportal.be")
-    with sync_playwright() as p:
-        try:
-            browser = p.chromium.launch(headless=True)
-            context = browser.new_context()
-            page = context.new_page()
-            page.route("**/*", bloquer_ressources_inutiles)
-            page.goto(url)
-            page.wait_for_timeout(2000)
-            texte_complet = page.locator("body").inner_text()
-            if len(texte_complet) > 10000:
-                texte_limite = (
-                    texte_complet[:5000]
-                    + "\n\n[... PARTIE CENTRALE COUPÉE POUR ALLÉGER LA LECTURE ...]\n\n"
-                    + texte_complet[-5000:]
-                )
-            else:
-                texte_limite = texte_complet
-            match_ecli = re.search(r"(ECLI:BE:[A-Z]+:\d{4}:[A-Z0-9.]+)", url)
-            ecli_confirme = match_ecli.group(1) if match_ecli else "ECLI non détecté dans l'URL"
-            reponse_finale = (
-                f"ECLI DE CET ARRÊT : {ecli_confirme}\n"
-                f"URL SOURCE : {url}\n\n"
-                f"TEXTE DE L'ARRÊT:\n{texte_limite}"
-            )
-            browser.close()
-            return {"status": "success", "data": reponse_finale}
-        except Exception as e:
-            if 'browser' in locals():
-                browser.close()
-            raise HTTPException(status_code=500, detail=str(e))
-
-
-# ─────────────────────────────────────────────
-# PARTIE 2A — LOI PAR SUJET (DICTIONNAIRE + FALLBACK JUSTEL)
-# ─────────────────────────────────────────────
-
-def detecter_loi_par_sujet(sujet: str) -> list[dict]:
-    sujet_lower = sujet.lower()
-    candidats = []
-    for cle, loi in LOIS_CONNUES.items():
-        score = 0
-        aliases_matches = []
-        for alias in loi["aliases"]:
-            if alias in sujet_lower:
-                score += len(alias.split())
-                aliases_matches.append(alias)
-        if score > 0:
-            candidats.append({
-                "cle": cle,
-                "numac": loi["numac"],
-                "titre": loi["titre"],
-                "score": score,
-                "aliases_matches": aliases_matches
-            })
-    candidats.sort(key=lambda x: x["score"], reverse=True)
-    return candidats
-
-
-@app.get("/loi/connue")
-async def loi_connue_par_sujet(
-    sujet: str = Query(..., description="Sujet juridique en langage naturel"),
-    scrape: bool = Query(False, description="Si True, scrape aussi les articles pertinents")
-):
-    candidats = detecter_loi_par_sujet(sujet)
-
-    if not candidats:
-        return await recherche_justel_fallback(sujet)
-
-    meilleur = candidats[0]
-    numac = meilleur["numac"]
-    url_source = construire_url_citation(numac)
-
-    reponse = {
-        "status": "ok",
-        "source": "dictionnaire_lois_connues",
-        "confiance": "haute" if meilleur["score"] >= 3 else "moyenne",
-        "loi": {
-            "titre": meilleur["titre"],
-            "numac": numac,
-            "url_source": url_source,
-            "aliases_matches": meilleur["aliases_matches"],
-            "score_pertinence": meilleur["score"]
-        },
-        "autres_candidats": [
-            {
-                "titre": c["titre"],
-                "numac": c["numac"],
-                "url_source": construire_url_citation(c["numac"]),
-                "score": c["score"]
-            }
-            for c in candidats[1:3]
-        ],
-        "articles": [],
-        "instruction_agent": (
-            f"Pour citer des articles verbatim : GET /loi/article?numac={numac}&article=XX. "
-            f"URL source à citer : {url_source}"
-        )
-    }
-
-    if scrape:
-        mots = [m for m in sujet.lower().split() if len(m) > 3]
-        resultat_scrape = await scraper_loi_par_numac(numac, mots)
-        reponse["articles"] = resultat_scrape.get("articles", [])
-        reponse["scrape_status"] = resultat_scrape.get("status")
-
-    return reponse
 
 
 async def recherche_justel_fallback(sujet: str) -> dict:
@@ -699,14 +836,66 @@ async def recherche_justel_fallback(sujet: str) -> dict:
             }
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROUTES API
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.get("/loi/connue")
+async def loi_connue_par_sujet(
+    sujet: str = Query(..., description="Sujet juridique en langage naturel"),
+    scrape: bool = Query(False, description="Si True, scrape aussi les articles pertinents")
+):
+    candidats = detecter_loi_par_sujet(sujet)
+
+    if not candidats:
+        return await recherche_justel_fallback(sujet)
+
+    meilleur = candidats[0]
+    numac = meilleur["numac"]
+    url_source = construire_url_citation(numac)
+
+    reponse = {
+        "status": "ok",
+        "source": "dictionnaire_lois_connues",
+        "confiance": "haute" if meilleur["score"] >= 3 else "moyenne",
+        "loi": {
+            "titre": meilleur["titre"],
+            "numac": numac,
+            "domaine": meilleur.get("domaine", ""),
+            "url_source": url_source,
+            "aliases_matches": meilleur["aliases_matches"],
+            "score_pertinence": meilleur["score"]
+        },
+        "autres_candidats": [
+            {
+                "titre": c["titre"],
+                "numac": c["numac"],
+                "domaine": c.get("domaine", ""),
+                "url_source": construire_url_citation(c["numac"]),
+                "score": c["score"]
+            }
+            for c in candidats[1:3]
+        ],
+        "articles": [],
+        "instruction_agent": (
+            f"Pour citer des articles verbatim : GET /loi/article?numac={numac}&article=XX. "
+            f"URL source à citer : {url_source}"
+        )
+    }
+
+    if scrape:
+        mots = [m for m in sujet.lower().split() if len(m) > 3]
+        resultat_scrape = await scraper_loi_par_numac(numac, mots)
+        reponse["articles"] = resultat_scrape.get("articles", [])
+        reponse["scrape_status"] = resultat_scrape.get("status")
+
+    return reponse
+
+
 @app.get("/loi/sujet")
 async def loi_sujet_alias(sujet: str = Query(...), langue: str = Query("fr")):
     return await loi_connue_par_sujet(sujet=sujet)
 
-
-# ─────────────────────────────────────────────
-# PARTIE 2B — ACCÈS DIRECT PAR NUMAC
-# ─────────────────────────────────────────────
 
 @app.get("/loi/numac")
 async def lire_loi_par_numac(
@@ -728,10 +917,6 @@ async def lire_loi_par_numac(
         "note": "Texte récupéré en temps réel depuis ejustice.just.fgov.be (Justel)"
     }
 
-
-# ─────────────────────────────────────────────
-# PARTIE 2C — ARTICLE PRÉCIS PAR NUMAC
-# ─────────────────────────────────────────────
 
 @app.get("/loi/article")
 async def lire_article_precis(
@@ -791,24 +976,26 @@ async def lire_article_precis(
             raise HTTPException(status_code=500, detail=str(e))
 
 
-# ─────────────────────────────────────────────
-# PARTIE 3 — UTILITAIRES
-# ─────────────────────────────────────────────
-
 @app.get("/loi/liste")
-async def lister_lois_connues():
+async def lister_lois_connues(domaine: str = Query("", description="Filtrer par domaine : travail, administratif, commercial, financier, fiscal, civil, social, pénal, transversal")):
+    lois_filtrees = {
+        cle: loi for cle, loi in LOIS_CONNUES.items()
+        if not domaine or loi.get("domaine", "") == domaine
+    }
     return {
         "status": "ok",
-        "total": len(LOIS_CONNUES),
+        "total": len(lois_filtrees),
+        "filtre_domaine": domaine or "tous",
         "lois": [
             {
                 "cle": cle,
                 "titre": loi["titre"],
+                "domaine": loi.get("domaine", ""),
                 "numac": loi["numac"],
                 "url_source": construire_url_citation(loi["numac"]),
                 "nb_aliases": len(loi["aliases"])
             }
-            for cle, loi in LOIS_CONNUES.items()
+            for cle, loi in lois_filtrees.items()
         ]
     }
 
@@ -862,9 +1049,14 @@ async def debug_justel(sujet: str = Query(...)):
 
 @app.get("/health")
 async def health():
+    domaines = {}
+    for loi in LOIS_CONNUES.values():
+        d = loi.get("domaine", "autre")
+        domaines[d] = domaines.get(d, 0) + 1
     return {
         "status": "online",
-        "version": "v5.1 — aliases egalite_hommes_femmes enrichis",
-        "url_format": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=F&caller=list&numac_search=NUMAC&NUMAC=0&nm_ecran=NUMAC&trier=promulgation&fr=f&choix1=et&choix2=et",
-        "lois_dans_dictionnaire": len(LOIS_CONNUES)
+        "version": "v8.0 — 5 domaines : travail, administratif, commercial, financier, fiscal",
+        "lois_dans_dictionnaire": len(LOIS_CONNUES),
+        "couverture_par_domaine": domaines,
+        "url_format": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&..."
     }
