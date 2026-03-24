@@ -109,17 +109,7 @@ LOIS_CONNUES = {
 
     # ── ANTI-DISCRIMINATION ──────────────────────────────────────────────
 
-    "anti_discrimination": {
-        "numac": "2007002099",   # ✅ vérifié Justel 10/05/2007
-        "titre": "Loi du 10 mai 2007 tendant à lutter contre certaines formes de discrimination",
-        "aliases": [
-            "discrimination", "anti-discrimination", "égalité traitement",
-            "discrimination raciale", "discrimination âge", "discrimination handicap",
-            "discrimination religion", "discrimination sexe", "inégalité",
-            "discrimination origine", "discrimination conviction",
-            "discrimination orientation sexuelle"
-        ]
-    },
+    
 
     "egalite_hommes_femmes": {
         "numac": "2007002098",   # ✅ vérifié Justel 10/05/2007 — texte français officiel
