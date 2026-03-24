@@ -122,7 +122,7 @@ LOIS_CONNUES = {
     },
 
     "egalite_hommes_femmes": {
-        "numac": "2007002098",   #  ✅ vérifié Justel 10/05/2007 — texte français officiel
+        "numac": "2007002098",   # ✅ vérifié Justel 10/05/2007 — texte français officiel
         "titre": "Loi du 10 mai 2007 tendant à lutter contre la discrimination entre hommes et femmes",
         "aliases": [
             "égalité hommes femmes", "discrimination genre",
