@@ -264,7 +264,7 @@ LOIS_CONNUES = {
     },
 
     "permis_urbanisme": {
-        "numac": "2019A31198",
+        "numac": "2016A05561",
         "titre": "Code wallon du Développement territorial (CoDT) — Décret du 20 juillet 2016",
         "domaine": "administratif",
         "aliases": [
@@ -275,6 +275,7 @@ LOIS_CONNUES = {
             "régularisation infraction", "permis unique wallon"
         ]
     },
+    
 
     "permis_environnement": {
         "numac": "2019A31199",
