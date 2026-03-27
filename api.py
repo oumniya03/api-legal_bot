@@ -23,7 +23,7 @@ LOIS_CONNUES = {
 
     "contrat_travail": {
         "numac": "1978070303",
-        "titre": "Loi du 3 juillet 1978 relative aux contrats de travail (LCT)",
+        "titre": "Loi du 3 juillet 1978 relative aux contrats de travail (LCT)(Version Consolidée)",
         "domaine": "travail",
         "aliases": [
             "licenciement", "préavis", "contrat travail", "rupture contrat",
@@ -40,7 +40,7 @@ LOIS_CONNUES = {
 
     "bien_etre_travail": {
         "numac": "1996012650",
-        "titre": "Loi du 4 août 1996 relative au bien-être des travailleurs lors de l'exécution de leur travail",
+        "titre": "Loi du 4 août 1996 relative au bien-être des travailleurs lors de l'exécution de leur travail(Version Consolidée)",
         "domaine": "travail",
         "aliases": [
             "harcèlement", "harcèlement moral", "harcèlement sexuel",
@@ -89,7 +89,7 @@ LOIS_CONNUES = {
     },
 
     "conges_annuels": {
-        "numac": "1971062805",
+        "numac": "1971062850",
         "titre": "Lois coordonnées du 28 juin 1971 relatives aux vacances annuelles des travailleurs salariés",
         "domaine": "travail",
         "aliases": [
@@ -100,7 +100,7 @@ LOIS_CONNUES = {
     },
 
     "travail_interimaire": {
-        "numac": "1987012264",
+        "numac": "1987012597",
         "titre": "Loi du 24 juillet 1987 sur le travail temporaire, le travail intérimaire et la mise de travailleurs à la disposition d'utilisateurs",
         "domaine": "travail",
         "aliases": [
@@ -111,7 +111,7 @@ LOIS_CONNUES = {
     },
 
     "protection_licenciement": {
-        "numac": "2014012010",
+        "numac": "2014201545",
         "titre": "CCT n°109 du 12 février 2014 concernant la motivation du licenciement",
         "domaine": "travail",
         "aliases": [
@@ -122,8 +122,8 @@ LOIS_CONNUES = {
     },
 
     "teletravail": {
-        "numac": "2023200295",
-        "titre": "CCT n°149 du 19 janvier 2023 relative au travail en dehors des locaux de l'entreprise (télétravail)",
+        "numac": "2021200424",  # Utilise ce NUMAC s'il finit par répondre, sinon Pinecone prendra le relais
+        "titre": "CCT n°149 du 26 janvier 2021 concernant le télétravail (Version Coordonnée)",
         "domaine": "travail",
         "aliases": [
             "télétravail", "travail à domicile", "remote work",
@@ -133,7 +133,7 @@ LOIS_CONNUES = {
     },
 
     "outplacement": {
-        "numac": "2001012748",
+        "numac": "2001012748", 
         "titre": "CCT n°82 du 10 juillet 2002 relative au droit à l'outplacement",
         "domaine": "travail",
         "aliases": [
@@ -178,7 +178,7 @@ LOIS_CONNUES = {
     # ══════════════════════════════════════════════════════════════════════════
 
     "lois_coordonnees_conseil_etat": {
-        "numac": "1973121203",
+        "numac": "1973011250",
         "titre": "Lois coordonnées du 12 janvier 1973 sur le Conseil d'État",
         "domaine": "administratif",
         "aliases": [
@@ -189,8 +189,8 @@ LOIS_CONNUES = {
         ]
     },
 
-    "loi_motivacion_actes": {
-        "numac": "1991012548",
+    "loi_motivation_actes": {
+        "numac": "1991000416",
         "titre": "Loi du 29 juillet 1991 relative à la motivation formelle des actes administratifs",
         "domaine": "administratif",
         "aliases": [
@@ -201,7 +201,7 @@ LOIS_CONNUES = {
     },
 
     "publicite_administration": {
-        "numac": "1994000316",
+        "numac": "1994000357",
         "titre": "Loi du 11 avril 1994 relative à la publicité de l'administration",
         "domaine": "administratif",
         "aliases": [
@@ -213,7 +213,7 @@ LOIS_CONNUES = {
     },
 
     "marches_publics": {
-        "numac": "2016021107",
+        "numac": "2016021053",
         "titre": "Loi du 17 juin 2016 relative aux marchés publics",
         "domaine": "administratif",
         "aliases": [
@@ -227,9 +227,9 @@ LOIS_CONNUES = {
         ]
     },
 
-    "defense_interets_belges": {
-        "numac": "2018015278",
-        "titre": "Loi du 17 août 2013 relative à la motivation, à l'information et aux voies de recours en matière de marchés publics",
+    "secrets_affaires": {
+        "numac": "2018031595",
+        "titre": "30 JUILLET 2018. - Loi relative à la protection des secrets d'affaires",
         "domaine": "administratif",
         "aliases": [
             "recours marché public", "standstill marché public",
@@ -239,7 +239,7 @@ LOIS_CONNUES = {
     },
 
     "fonctionnaires_federaux": {
-        "numac": "1993000040",
+        "numac": "1937100201",
         "titre": "Arrêté royal du 2 octobre 1937 portant le statut des agents de l'État",
         "domaine": "administratif",
         "aliases": [
@@ -278,7 +278,7 @@ LOIS_CONNUES = {
     
 
     "permis_environnement": {
-        "numac": "2019A31199",
+        "numac": "1999027439",
         "titre": "Décret wallon du 11 mars 1999 relatif au permis d'environnement",
         "domaine": "administratif",
         "aliases": [
@@ -330,7 +330,7 @@ LOIS_CONNUES = {
 
     "code_droit_economique": {
         "numac": "2013A11134",
-        "titre": "Code de droit économique (CDE)",
+        "titre": "28 FEVRIER 2013 Code de droit économique (CDE)",
         "domaine": "commercial",
         "aliases": [
             "pratiques commerce", "concurrence déloyale", "publicité trompeuse",
@@ -343,8 +343,8 @@ LOIS_CONNUES = {
     },
 
     "agence_commerciale": {
-        "numac": "1995012009",
-        "titre": "Loi du 13 avril 1995 relative au contrat d'agence commerciale",
+        "numac": "2013A11134",
+        "titre": "Code de droit économique - Livre X (Agence commerciale)",
         "domaine": "commercial",
         "aliases": [
             "agent commercial", "contrat agence", "agence commerciale",
@@ -355,8 +355,8 @@ LOIS_CONNUES = {
     },
 
     "franchise": {
-        "numac": "2005A12743",
-        "titre": "Loi du 19 décembre 2005 relative à l'information précontractuelle dans le cadre d'accords de partenariat commercial",
+        "numac": "2013A11134",
+        "titre": "Code de Droit Économique (CDE) - Livre X "Accords de coopération commerciale"",
         "domaine": "commercial",
         "aliases": [
             "franchise", "franchisé", "franchiseur",
@@ -367,7 +367,7 @@ LOIS_CONNUES = {
     },
 
     "contrats_commerciaux_b2b": {
-        "numac": "2019A11791",
+        "numac": "2019011404",
         "titre": "Loi du 4 avril 2019 modifiant le Code de droit économique — clauses abusives B2B",
         "domaine": "commercial",
         "aliases": [
@@ -390,8 +390,8 @@ LOIS_CONNUES = {
     },
 
     "droit_auteur": {
-        "numac": "1994009586",
-        "titre": "Loi du 30 juin 1994 relative au droit d'auteur et aux droits voisins",
+        "numac": "2013A11134",
+        "titre": "Code de droit économique - Livre XI (Propriété intellectuelle)",
         "domaine": "commercial",
         "aliases": [
             "droits auteur salarié", "œuvre créée travail", "auteur employé",
@@ -428,7 +428,7 @@ LOIS_CONNUES = {
     # ══════════════════════════════════════════════════════════════════════════
 
     "loi_fsma": {
-        "numac": "2002003141",
+        "numac": "2002003392",
         "titre": "Loi du 2 août 2002 relative à la surveillance du secteur financier et aux services financiers",
         "domaine": "financier",
         "aliases": [
@@ -440,7 +440,7 @@ LOIS_CONNUES = {
     },
 
     "banques_loi": {
-        "numac": "2014011463",
+        "numac": "2014003194",
         "titre": "Loi du 25 avril 2014 relative au statut et au contrôle des établissements de crédit (loi bancaire)",
         "domaine": "financier",
         "aliases": [
@@ -453,8 +453,8 @@ LOIS_CONNUES = {
     },
 
     "credit_consommateur": {
-        "numac": "2010A09064",
-        "titre": "Loi du 12 juin 2010 relative aux contrats de crédit à la consommation (CCC — Livre VII CDE)",
+        "numac": "2013A11134",
+        "titre": "Code de droit économique - Livre VII (Crédit consommateur )",
         "domaine": "financier",
         "aliases": [
             "crédit consommateur", "prêt personnel", "crédit voiture",
@@ -466,8 +466,8 @@ LOIS_CONNUES = {
     },
 
     "credit_hypothecaire": {
-        "numac": "2016A11066",
-        "titre": "Loi du 22 avril 2016 relative au crédit hypothécaire (Livre VII CDE)",
+        "numac": "2013A11134",
+        "titre": "Code de droit économique - Livre VII (Crédit hypothécaire)",
         "domaine": "financier",
         "aliases": [
             "crédit hypothécaire", "prêt immobilier", "hypothèque bancaire",
@@ -493,7 +493,7 @@ LOIS_CONNUES = {
     },
 
     "services_paiement": {
-        "numac": "2018015093",
+        "numac": "2018030643",
         "titre": "Loi du 11 mars 2018 relative au statut et au contrôle des établissements de paiement et des établissements de monnaie électronique (PSD2)",
         "domaine": "financier",
         "aliases": [
@@ -505,7 +505,7 @@ LOIS_CONNUES = {
     },
 
     "blanchiment": {
-        "numac": "2017009460",
+        "numac": "2017013368",
         "titre": "Loi du 18 septembre 2017 relative à la prévention du blanchiment de capitaux et du financement du terrorisme",
         "domaine": "financier",
         "aliases": [
@@ -517,7 +517,7 @@ LOIS_CONNUES = {
     },
 
     "instruments_financiers": {
-        "numac": "2016011448",
+        "numac": "2017014203",
         "titre": "Loi du 21 novembre 2017 relative aux infrastructures des marchés d'instruments financiers (MiFID II)",
         "domaine": "financier",
         "aliases": [
@@ -563,7 +563,7 @@ LOIS_CONNUES = {
     },
 
     "droits_enregistrement": {
-        "numac": "1939053108",
+        "numac": "2021040322",
         "titre": "Code des droits d'enregistrement, d'hypothèque et de greffe",
         "domaine": "fiscal",
         "aliases": [
@@ -576,7 +576,7 @@ LOIS_CONNUES = {
     },
 
     "droits_succession": {
-        "numac": "1936032601",
+        "numac": "2006027130",
         "titre": "Code des droits de succession (wallon : Décret du 19 janvier 2017)",
         "domaine": "fiscal",
         "aliases": [
@@ -589,7 +589,7 @@ LOIS_CONNUES = {
     },
 
     "taxe_circulation": {
-        "numac": "1992003544",
+        "numac": "2020020547",
         "titre": "Loi relative à la taxe de circulation sur les véhicules automobiles (coordonnée 1992)",
         "domaine": "fiscal",
         "aliases": [
@@ -600,7 +600,7 @@ LOIS_CONNUES = {
     },
 
     "taxe_regionale_wallonne": {
-        "numac": "2003027155",
+        "numac": "1999027513",
         "titre": "Décret wallon du 6 mai 1999 relatif à l'établissement, au recouvrement et au contentieux en matière de taxes régionales wallonnes",
         "domaine": "fiscal",
         "aliases": [
@@ -611,7 +611,7 @@ LOIS_CONNUES = {
     },
 
     "procedure_fiscale": {
-        "numac": "1919081504",
+        "numac": "1999003180",
         "titre": "Loi du 15 mars 1999 relative au contentieux en matière fiscale (anciennement AR 1919)",
         "domaine": "fiscal",
         "aliases": [
