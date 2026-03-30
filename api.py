@@ -251,9 +251,9 @@ LOIS_CONNUES = {
         ]
     },
 
-    "cpas": {
-        "numac": "1976072701",
-        "titre": "Loi du 8 juillet 1976 organique des centres publics d'action sociale",
+   "cpas": {
+        "numac": "1976070810", 
+        "titre": "8 JUILLET 1976. - Loi organique des CPAS (Version Wallonne Consolidée)",
         "domaine": "administratif",
         "aliases": [
             "cpas", "aide sociale", "revenu intégration",
@@ -479,7 +479,7 @@ LOIS_CONNUES = {
     },
 
     "assurances": {
-        "numac": "2014011465",
+        "numac": "2014011239",
         "titre": "Loi du 4 avril 2014 relative aux assurances",
         "domaine": "financier",
         "aliases": [
@@ -551,7 +551,7 @@ LOIS_CONNUES = {
 
     "tva": {
         "numac": "1969070305",
-        "titre": "Code de la taxe sur la valeur ajoutée (TVA)",
+        "titre": "3 JUILLET 1969. - Code de la taxe sur la valeur ajoutée (TVA)",
         "domaine": "fiscal",
         "aliases": [
             "tva", "taxe valeur ajoutée", "assujetti tva",
