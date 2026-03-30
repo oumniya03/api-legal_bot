@@ -356,7 +356,7 @@ LOIS_CONNUES = {
 
     "franchise": {
         "numac": "2013A11134",
-        "titre": "Code de Droit Économique (CDE) - Livre X "Accords de coopération commerciale"",
+        "titre": "Code de Droit Économique (CDE) - Livre X 'Accords de coopération commerciale'",
         "domaine": "commercial",
         "aliases": [
             "franchise", "franchisé", "franchiseur",
