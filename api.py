@@ -253,7 +253,7 @@ LOIS_CONNUES = {
 
    "cpas": {
         "numac": "1976070810", 
-        "titre": "8 JUILLET 1976. - Loi organique des CPAS (Version Wallonne Consolidée)",
+        "titre": "8 JUILLET 1976. - Loi organique des centres publics d'action sociale (CPAS) (Version Wallonne Consolidée)",
         "domaine": "administratif",
         "aliases": [
             "cpas", "aide sociale", "revenu intégration",
