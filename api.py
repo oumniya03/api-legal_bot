@@ -12,7 +12,6 @@ app = FastAPI(title="Belgian Law Brain API — Lois v8")
 #   3. Droit commercial
 #   4. Droit financier
 #   5. Droit fiscal
-# + Droit civil, social, pénal, RGPD (transversaux)
 # ─────────────────────────────────────────────────────────────────────────────
 
 LOIS_CONNUES = {
