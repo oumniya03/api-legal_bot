@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException, Query
+from pydantic import BaseModel
 from playwright.async_api import async_playwright
+from playwright.sync_api import sync_playwright
 import re
 
-app = FastAPI(title="Belgian Law Brain API — Lois v8")
+app = FastAPI(title="Belgian Law Brain API — Lois & Jurisprudence v9")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # DICTIONNAIRE DES LOIS BELGES — NUMAC VÉRIFIÉS SUR JUSTEL
@@ -12,6 +14,7 @@ app = FastAPI(title="Belgian Law Brain API — Lois v8")
 #   3. Droit commercial
 #   4. Droit financier
 #   5. Droit fiscal
+
 # ─────────────────────────────────────────────────────────────────────────────
 
 LOIS_CONNUES = {
@@ -252,7 +255,7 @@ LOIS_CONNUES = {
 
    "cpas": {
         "numac": "1976070810", 
-        "titre": "8 JUILLET 1976. - Loi organique des centres publics d'action sociale (CPAS) (Version Wallonne Consolidée)",
+        "titre": "8 JUILLET 1976. - Loi organique des CPAS (Version Wallonne Consolidée)",
         "domaine": "administratif",
         "aliases": [
             "cpas", "aide sociale", "revenu intégration",
@@ -661,6 +664,12 @@ async def bloquer_ressources(route):
     else:
         await route.continue_()
 
+def bloquer_ressources_sync(route):
+    if route.request.resource_type in ["image", "font", "media"]:
+        route.abort()
+    else:
+        route.continue_()
+
 
 def detecter_loi_par_sujet(sujet: str) -> list[dict]:
     sujet_lower = sujet.lower()
@@ -975,6 +984,98 @@ async def lire_article_precis(
             await browser.close()
             raise HTTPException(status_code=500, detail=str(e))
 
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JURISPRUDENCE — ENDPOINTS JUPORTAL
+# ─────────────────────────────────────────────────────────────────────────────
+
+class QueryModel(BaseModel):
+    mot_cle: str
+
+class UrlModel(BaseModel):
+    url: str
+
+
+@app.post("/scrape")
+async def scrape_jurisprudence(query: QueryModel):
+    """Recherche jurisprudence JuPortal par mot-clé. Retourne arrêts post-2019."""
+    mot_cle = query.mot_cle
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        await page.route("**/*", bloquer_ressources)
+        try:
+            await page.goto("https://juportal.be/moteur/formulaire", timeout=60000)
+            await page.locator("input#texpression").fill(mot_cle)
+            await page.locator("button[type='submit']:has-text('Rechercher')").first.click()
+            await page.wait_for_timeout(3000)
+            liens_elements = await page.locator("a[href*='ECLI']").all()
+            resultats = []
+            for lien in liens_elements:
+                href = await lien.get_attribute("href")
+                if href and "ECLI" in href:
+                    url_propre = href.split("?")[0].split("#")[0]
+                    match_ecli = re.search(r"(ECLI:BE:[A-Z]+:\d{4}:[A-Z0-9.]+)", url_propre)
+                    match_annee = re.search(r"ECLI:BE:[A-Z]+:(\d{4}):", url_propre)
+                    if match_ecli and match_annee:
+                        ecli = match_ecli.group(1)
+                        annee = int(match_annee.group(1))
+                        if annee >= 2019:
+                            type_doc = "ARRÊT" if ":ARR." in ecli else "DÉCISION"
+                            resultats.append({
+                                "ecli": ecli,
+                                "annee": annee,
+                                "type": type_doc,
+                                "url": "https://juportal.be" + url_propre
+                            })
+            resultats_tries = sorted(resultats, key=lambda x: x["annee"], reverse=True)[:10]
+            texte = f"--- RÉSULTATS POUR '{mot_cle}' (post-2019) ---\n"
+            for i, r in enumerate(resultats_tries):
+                texte += f"ARR{i+1}: [{r['type']}] ECLI={r['ecli']} | ANNÉE={r['annee']} | URL={r['url']}\n"
+            await browser.close()
+            return {"status": "success", "data": texte}
+        except Exception as e:
+            await browser.close()
+            raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/lire_arret")
+def lire_arret_complet(query: UrlModel):
+    """Lit le texte intégral d'un arrêt JuPortal depuis son URL."""
+    url = query.url
+    if "juportal.be" not in url:
+        raise HTTPException(status_code=400, detail="L'URL doit provenir de juportal.be")
+    with sync_playwright() as p:
+        try:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context()
+            page = context.new_page()
+            page.route("**/*", bloquer_ressources_sync)
+            page.goto(url)
+            page.wait_for_timeout(2000)
+            texte_complet = page.locator("body").inner_text()
+            if len(texte_complet) > 10000:
+                texte_limite = (
+                    texte_complet[:5000]
+                    + "\n\n[... PARTIE CENTRALE COUPÉE POUR ALLÉGER LA LECTURE ...]\n\n"
+                    + texte_complet[-5000:]
+                )
+            else:
+                texte_limite = texte_complet
+            match_ecli = re.search(r"(ECLI:BE:[A-Z]+:\d{4}:[A-Z0-9.]+)", url)
+            ecli_confirme = match_ecli.group(1) if match_ecli else "ECLI non détecté dans l'URL"
+            reponse_finale = (
+                f"ECLI DE CET ARRÊT : {ecli_confirme}\n"
+                f"URL SOURCE : {url}\n\n"
+                f"TEXTE DE L'ARRÊT:\n{texte_limite}"
+            )
+            browser.close()
+            return {"status": "success", "data": reponse_finale}
+        except Exception as e:
+            if "browser" in locals():
+                browser.close()
+            raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/loi/liste")
 async def lister_lois_connues(domaine: str = Query("", description="Filtrer par domaine : travail, administratif, commercial, financier, fiscal, civil, social, pénal, transversal")):
