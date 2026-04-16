@@ -469,7 +469,7 @@ LOIS_CONNUES = {
             "fsma", "surveillance financière", "services financiers",
             "intermediaire financier", "délit d'initié", "manipulation marché",
             "abus marché", "prospectus", "information privilégiée",
-            "insider trading", "intégrité marché financier"2002003392
+            "insider trading", "intégrité marché financier"
             
         ]
     },
