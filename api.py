@@ -25,7 +25,6 @@ LOIS_CONNUES = {
 
     "contrat_travail": {
         "numac": "1978070303",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1978-08-22&numac_search=1978070303&page=1&lg_txt=F&caller=list&1978070303=0&trier=promulgation&view_numac=2013012289&fr=f&nm_ecran=1978070303&choix1=et&choix2=et",
         "titre": "Loi du 3 juillet 1978 relative aux contrats de travail (LCT)(Version Consolidée)",
         "domaine": "travail",
         "aliases": [
@@ -43,7 +42,6 @@ LOIS_CONNUES = {
 
     "bien_etre_travail": {
         "numac": "1996012650",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1996-09-18&numac_search=1996012650&page=1&lg_txt=F&caller=list&1996012650=0&trier=promulgation&view_numac=1978070303fx2013012289&fr=f&nm_ecran=1996012650&choix1=et&choix2=et",
         "titre": "Loi du 4 août 1996 relative au bien-être des travailleurs lors de l'exécution de leur travail(Version Consolidée)",
         "domaine": "travail",
         "aliases": [
@@ -57,7 +55,6 @@ LOIS_CONNUES = {
 
     "duree_travail": {
         "numac": "1971031602",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1971-03-30&numac_search=1971031602&page=1&lg_txt=F&caller=list&1971031602=0&trier=promulgation&view_numac=1996012650fx1978070303fx2013012289&fr=f&nm_ecran=1971031602&choix1=et&choix2=et",
         "titre": "Loi du 16 mars 1971 sur le travail",
         "domaine": "travail",
         "aliases": [
@@ -71,7 +68,6 @@ LOIS_CONNUES = {
 
     "statut_unique": {
         "numac": "2013012289",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-12-31&numac_search=2013012289&page=1&lg_txt=F&caller=list&2013012289=0&trier=promulgation&view_numac=1971031602fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=2013012289&choix1=et&choix2=et",
         "titre": "Loi du 26 décembre 2013 concernant l'introduction d'un statut unique entre ouvriers et employés",
         "domaine": "travail",
         "aliases": [
@@ -84,7 +80,6 @@ LOIS_CONNUES = {
 
     "protection_maternite": {
         "numac": "1971031602",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1971-03-30&numac_search=1971031602&page=1&lg_txt=F&caller=list&1971031602=0&trier=promulgation&view_numac=2013012289fx1971031602fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=1971031602&choix1=et&choix2=et",
         "titre": "Protection de la maternité — Loi du 16 mars 1971 (consolidée)",
         "domaine": "travail",
         "aliases": [
@@ -97,7 +92,6 @@ LOIS_CONNUES = {
 
     "conges_annuels": {
         "numac": "1971062850",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1971-09-30&numac_search=1971062850&page=1&lg_txt=F&caller=list&1971062850=0&trier=promulgation&view_numac=1971031602fx2013012289fx1971031602fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=1971062850&choix1=et&choix2=et",
         "titre": "Lois coordonnées du 28 juin 1971 relatives aux vacances annuelles des travailleurs salariés",
         "domaine": "travail",
         "aliases": [
@@ -109,7 +103,6 @@ LOIS_CONNUES = {
 
     "travail_interimaire": {
         "numac": "1987012597",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1987-08-20&numac_search=1987012597&page=1&lg_txt=F&caller=list&1987012597=0&trier=promulgation&view_numac=1971062850fx1971031602fx2013012289fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=1987012597&choix1=et&choix2=et",
         "titre": "Loi du 24 juillet 1987 sur le travail temporaire, le travail intérimaire et la mise de travailleurs à la disposition d'utilisateurs",
         "domaine": "travail",
         "aliases": [
@@ -121,7 +114,6 @@ LOIS_CONNUES = {
 
     "protection_licenciement": {
         "numac": "2014201545",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2014-03-20&numac_search=2014201545&page=1&lg_txt=F&caller=list&2014201545=0&trier=promulgation&view_numac=1987012597fx1971062850fx1971031602fx2013012289fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=2014201545&choix1=et&choix2=et",
         "titre": "CCT n°109 du 12 février 2014 concernant la motivation du licenciement",
         "domaine": "travail",
         "aliases": [
@@ -132,8 +124,7 @@ LOIS_CONNUES = {
     },
 
     "teletravail": {
-        "numac": "2021A01165",  
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2021-05-05&numac_search=2021A01165&page=1&lg_txt=F&caller=list&2021A01165=1&trier=promulgation&view_numac=2021200888&fr=f&text1=CCT+149+&choix1=et&choix2=et",
+        "numac": "2021200424",  # Utilise ce NUMAC s'il finit par répondre, sinon Pinecone prendra le relais
         "titre": "CCT n°149 du 26 janvier 2021 concernant le télétravail (Version Coordonnée)",
         "domaine": "travail",
         "aliases": [
@@ -143,9 +134,9 @@ LOIS_CONNUES = {
         ]
     },
 
-    "outplacement": {         #deja dans qdrant à verifier apres
-        "numac": "2001012748", 
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2001-12-11&numac_search=2001012748&page=1&lg_txt=F&caller=list&2001012748=0&trier=promulgation&view_numac=2021200888fx2014201545fx1987012597fx1971062850fx1971031602fx2013012289fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=2001012748&choix1=et&choix2=et",
+    "outplacement": {
+        "numac": "2001012748",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=2001012748",
         "titre": "CCT n°82 du 10 juillet 2002 relative au droit à l'outplacement",
         "domaine": "travail",
         "aliases": [
@@ -155,9 +146,26 @@ LOIS_CONNUES = {
         ]
     },
 
+    "statut_independants": {
+        "numac": "1967100238",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=1967100238",
+        "titre": "Arrêté royal n°38 du 27 juillet 1967 organisant le statut social des travailleurs indépendants",
+        "domaine": "travail",
+        "aliases": [
+            "indépendant", "cotisations sociales indépendant",
+            "statut social indépendant", "caisse assurances sociales",
+            "gérant indépendant", "travailleur indépendant cotisation",
+            "ar 38", "ar n 38", "ar n°38", "inasti",
+            "revenu de remplacement indépendant",
+            "pension indépendant", "maladie indépendant",
+            "cotisations inasti", "cotisation trimestrielle indépendant",
+            "statut social gérant", "indépendant à titre principal",
+            "indépendant à titre complémentaire"
+        ]
+    },
+
     "anti_discrimination": {
         "numac": "2007002099",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2007-05-30&numac_search=2007002099&page=1&lg_txt=F&caller=list&2007002099=0&trier=promulgation&view_numac=2021a01165fx2021200888&fr=f&nm_ecran=2007002099&choix1=et&choix2=et",
         "titre": "Loi du 10 mai 2007 tendant à lutter contre certaines formes de discrimination",
         "domaine": "travail",
         "aliases": [
@@ -171,7 +179,6 @@ LOIS_CONNUES = {
 
     "egalite_hommes_femmes": {
         "numac": "2007002098",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2007-05-30&numac_search=2007002098&page=1&lg_txt=F&caller=list&2007002098=0&trier=promulgation&view_numac=2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2007002098&choix1=et&choix2=et",
         "titre": "Loi du 10 mai 2007 tendant à lutter contre la discrimination entre hommes et femmes",
         "domaine": "travail",
         "aliases": [
@@ -193,7 +200,6 @@ LOIS_CONNUES = {
 
     "lois_coordonnees_conseil_etat": {
         "numac": "1973011250",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1973-03-21&numac_search=1973011250&page=1&lg_txt=F&caller=list&1973011250=0&trier=promulgation&view_numac=2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1973011250&choix1=et&choix2=et",
         "titre": "Lois coordonnées du 12 janvier 1973 sur le Conseil d'État",
         "domaine": "administratif",
         "aliases": [
@@ -206,7 +212,6 @@ LOIS_CONNUES = {
 
     "loi_motivation_actes": {
         "numac": "1991000416",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1991-09-12&numac_search=1991000416&page=1&lg_txt=F&caller=list&1991000416=0&trier=promulgation&view_numac=1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1991000416&choix1=et&choix2=et",
         "titre": "Loi du 29 juillet 1991 relative à la motivation formelle des actes administratifs",
         "domaine": "administratif",
         "aliases": [
@@ -218,7 +223,6 @@ LOIS_CONNUES = {
 
     "publicite_administration": {
         "numac": "1994000357",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1994-06-30&numac_search=1994000357&page=1&lg_txt=F&caller=list&1994000357=0&trier=promulgation&view_numac=1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1994000357&choix1=et&choix2=et",
         "titre": "Loi du 11 avril 1994 relative à la publicité de l'administration",
         "domaine": "administratif",
         "aliases": [
@@ -231,7 +235,6 @@ LOIS_CONNUES = {
 
     "marches_publics": {
         "numac": "2016021053",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2016-07-14&numac_search=2016021053&page=1&lg_txt=F&caller=list&2016021053=0&trier=promulgation&view_numac=1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2016021053&choix1=et&choix2=et",
         "titre": "Loi du 17 juin 2016 relative aux marchés publics",
         "domaine": "administratif",
         "aliases": [
@@ -247,7 +250,6 @@ LOIS_CONNUES = {
 
     "secrets_affaires": {
         "numac": "2018031595",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2018-08-14&numac_search=2018031595&page=1&lg_txt=F&caller=list&2018031595=0&trier=promulgation&view_numac=2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2018031595&choix1=et&choix2=et",
         "titre": "30 JUILLET 2018. - Loi relative à la protection des secrets d'affaires",
         "domaine": "administratif",
         "aliases": [
@@ -259,7 +261,6 @@ LOIS_CONNUES = {
 
     "fonctionnaires_federaux": {
         "numac": "1937100201",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1937-10-08&numac_search=1937100201&page=1&lg_txt=F&caller=list&1937100201=0&trier=promulgation&view_numac=2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1937100201&choix1=et&choix2=et",
         "titre": "Arrêté royal du 2 octobre 1937 portant le statut des agents de l'État",
         "domaine": "administratif",
         "aliases": [
@@ -273,7 +274,6 @@ LOIS_CONNUES = {
 
    "cpas": {
         "numac": "1976070810", 
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1976-08-05&numac_search=1976070810&page=1&lg_txt=F&caller=list&1976070810=0&trier=promulgation&view_numac=1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1976070810&choix1=et&choix2=et",
         "titre": "8 JUILLET 1976. - Loi organique des CPAS (Version Wallonne Consolidée)",
         "domaine": "administratif",
         "aliases": [
@@ -286,7 +286,6 @@ LOIS_CONNUES = {
 
     "permis_urbanisme": {
         "numac": "2016A05561",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2016-11-14&numac_search=2016A05561&page=1&lg_txt=F&caller=list&2016A05561=0&trier=promulgation&view_numac=1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2016A05561&choix1=et&choix2=et",
         "titre": "Code wallon du Développement territorial (CoDT) — Décret du 20 juillet 2016",
         "domaine": "administratif",
         "aliases": [
@@ -301,7 +300,6 @@ LOIS_CONNUES = {
 
     "permis_environnement": {
         "numac": "1999027439",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1999-06-08&numac_search=1999027439&page=1&lg_txt=F&caller=list&1999027439=0&trier=promulgation&view_numac=2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1999027439&choix1=et&choix2=et",
         "titre": "Décret wallon du 11 mars 1999 relatif au permis d'environnement",
         "domaine": "administratif",
         "aliases": [
@@ -318,7 +316,6 @@ LOIS_CONNUES = {
 
     "code_societes": {
         "numac": "2019A40586",
-        "url_source": " https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2019-04-04&numac_search=2019A40586&page=1&lg_txt=F&caller=list&2019A40586=0&trier=promulgation&view_numac=1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2019A40586&choix1=et&choix2=et",
         "titre": "Code des sociétés et des associations du 23 mars 2019 (CSA/WVV)",
         "domaine": "commercial",
         "aliases": [
@@ -338,7 +335,6 @@ LOIS_CONNUES = {
 
     "insolvabilite": {
         "numac": "2017012998",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2017-09-11&numac_search=2017012998&page=1&lg_txt=F&caller=list&2017012998=0&trier=promulgation&view_numac=2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2017012998&choix1=et&choix2=et",
         "titre": "Code de droit de l'insolvabilité (Livre XX CDE) — Loi du 11 août 2017",
         "domaine": "commercial",
         "aliases": [
@@ -355,7 +351,6 @@ LOIS_CONNUES = {
 
     "code_droit_economique": {
         "numac": "2013A11134",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
         "titre": "28 FEVRIER 2013 Code de droit économique (CDE)",
         "domaine": "commercial",
         "aliases": [
@@ -370,7 +365,6 @@ LOIS_CONNUES = {
 
     "agence_commerciale": {
         "numac": "2013A11134",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
         "titre": "Code de droit économique - Livre X (Agence commerciale)",
         "domaine": "commercial",
         "aliases": [
@@ -383,7 +377,6 @@ LOIS_CONNUES = {
 
     "franchise": {
         "numac": "2013A11134",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
         "titre": "Code de Droit Économique (CDE) - Livre X 'Accords de coopération commerciale'",
         "domaine": "commercial",
         "aliases": [
@@ -396,7 +389,6 @@ LOIS_CONNUES = {
 
     "contrats_commerciaux_b2b": {
         "numac": "2019011404",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2019-05-24&numac_search=2019011404&page=1&lg_txt=F&caller=list&2019011404=0&trier=promulgation&view_numac=2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2019011404&choix1=et&choix2=et",
         "titre": "Loi du 4 avril 2019 modifiant le Code de droit économique — clauses abusives B2B",
         "domaine": "commercial",
         "aliases": [
@@ -408,7 +400,6 @@ LOIS_CONNUES = {
 
     "propriete_intellectuelle": {
         "numac": "2013A11134",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
         "titre": "Code de droit économique — Livre XI : Propriété intellectuelle",
         "domaine": "commercial",
         "aliases": [
@@ -421,7 +412,6 @@ LOIS_CONNUES = {
 
     "droit_auteur": {
         "numac": "2013A11134",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
         "titre": "Code de droit économique - Livre XI (Propriété intellectuelle)",
         "domaine": "commercial",
         "aliases": [
@@ -433,19 +423,36 @@ LOIS_CONNUES = {
 
     "bail_commercial": {
         "numac": "1951043003",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&cn_search=2019041328",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=1951043003",
         "titre": "Loi du 30 avril 1951 sur les baux commerciaux",
         "domaine": "commercial",
         "aliases": [
             "bail commercial", "bail fonds commerce", "renouvellement bail commercial",
             "indemnité éviction", "droit renouvellement",
-            "loyer commercial", "cession bail commercial"
+            "loyer commercial", "cession bail commercial",
+            "baux commerciaux", "renouvellement bail", "bail 9 ans",
+            "préavis bail commercial", "sous-location commerciale"
+        ]
+    },
+
+    "retard_paiement": {
+        "numac": "2002009498",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=2002009498",
+        "titre": "Loi du 2 août 2002 concernant la lutte contre le retard de paiement dans les transactions commerciales",
+        "domaine": "commercial",
+        "aliases": [
+            "retard paiement", "facture impayée", "intérêts retard",
+            "paiement en retard", "délai paiement", "facture non payée",
+            "indemnité recouvrement", "intérêts de retard commercial",
+            "paiement b2b", "créancier impayé", "débiteur défaillant",
+            "40 euros frais recouvrement", "taux intérêt retard",
+            "transaction commerciale retard", "facture échue",
+            "recouvrement créance commerciale", "intérêts légaux facture"
         ]
     },
 
     "pratiques_marche": {
         "numac": "2013A11134",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
         "titre": "Code de droit économique — Livre VI : Pratiques du marché",
         "domaine": "commercial",
         "aliases": [
@@ -462,7 +469,6 @@ LOIS_CONNUES = {
 
     "loi_fsma": {
         "numac": "2002003392",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2002-09-04&numac_search=2002003392&page=1&lg_txt=F&caller=list&2002003392=0&trier=promulgation&view_numac=2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2002003392&choix1=et&choix2=et",
         "titre": "Loi du 2 août 2002 relative à la surveillance du secteur financier et aux services financiers",
         "domaine": "financier",
         "aliases": [
@@ -470,13 +476,11 @@ LOIS_CONNUES = {
             "intermediaire financier", "délit d'initié", "manipulation marché",
             "abus marché", "prospectus", "information privilégiée",
             "insider trading", "intégrité marché financier"
-            
         ]
     },
 
     "banques_loi": {
         "numac": "2014003194",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2014-05-07&numac_search=2014003194&page=1&lg_txt=F&caller=list&2014003194=0&trier=promulgation&view_numac=2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2014003194&choix1=et&choix2=et",
         "titre": "Loi du 25 avril 2014 relative au statut et au contrôle des établissements de crédit (loi bancaire)",
         "domaine": "financier",
         "aliases": [
@@ -490,7 +494,6 @@ LOIS_CONNUES = {
 
     "credit_consommateur": {
         "numac": "2013A11134",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
         "titre": "Code de droit économique - Livre VII (Crédit consommateur )",
         "domaine": "financier",
         "aliases": [
@@ -504,7 +507,6 @@ LOIS_CONNUES = {
 
     "credit_hypothecaire": {
         "numac": "2013A11134",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
         "titre": "Code de droit économique - Livre VII (Crédit hypothécaire)",
         "domaine": "financier",
         "aliases": [
@@ -518,7 +520,6 @@ LOIS_CONNUES = {
 
     "assurances": {
         "numac": "2014011239",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2014-04-30&numac_search=2014011239&page=1&lg_txt=F&caller=list&2014011239=0&trier=promulgation&view_numac=2014003194fx2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2014011239&choix1=et&choix2=et",
         "titre": "Loi du 4 avril 2014 relative aux assurances",
         "domaine": "financier",
         "aliases": [
@@ -533,7 +534,6 @@ LOIS_CONNUES = {
 
     "services_paiement": {
         "numac": "2018030643",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2018-03-26&numac_search=2018030643&page=1&lg_txt=F&caller=list&2018030643=0&trier=promulgation&view_numac=2014011239fx2014003194fx2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2018030643&choix1=et&choix2=et",
         "titre": "Loi du 11 mars 2018 relative au statut et au contrôle des établissements de paiement et des établissements de monnaie électronique (PSD2)",
         "domaine": "financier",
         "aliases": [
@@ -546,7 +546,6 @@ LOIS_CONNUES = {
 
     "blanchiment": {
         "numac": "2017013368",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2017-10-06&numac_search=2017013368&page=1&lg_txt=F&caller=list&2017013368=0&trier=promulgation&view_numac=2018030643fx2014011239fx2014003194fx2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2017013368&choix1=et&choix2=et",
         "titre": "Loi du 18 septembre 2017 relative à la prévention du blanchiment de capitaux et du financement du terrorisme",
         "domaine": "financier",
         "aliases": [
@@ -559,7 +558,6 @@ LOIS_CONNUES = {
 
     "instruments_financiers": {
         "numac": "2017014203",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2017-12-07&numac_search=2017014203&page=1&lg_txt=F&caller=list&2017014203=0&trier=promulgation&view_numac=2017013368fx2018030643fx2014011239fx2014003194fx2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2017014203&choix1=et&choix2=et",
         "titre": "Loi du 21 novembre 2017 relative aux infrastructures des marchés d'instruments financiers (MiFID II)",
         "domaine": "financier",
         "aliases": [
@@ -577,7 +575,6 @@ LOIS_CONNUES = {
 
     "cir92": {
         "numac": "1992003456",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1992-07-30&numac_search=1992003456&page=1&lg_txt=F&caller=list&1992003456=0&trier=promulgation&view_numac=2017014203fx2017013368fx2018030643fx2014011239fx2014003194fx2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1992003456&choix1=et&choix2=et",
         "titre": "Code des impôts sur les revenus 1992 (CIR92)",
         "domaine": "fiscal",
         "aliases": [
@@ -594,7 +591,6 @@ LOIS_CONNUES = {
 
     "tva": {
         "numac": "1969070305",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1969-07-17&numac_search=1969070305&page=1&lg_txt=F&caller=list&1969070305=0&trier=promulgation&view_numac=1992003456fx2017014203fx2017013368fx2018030643fx2014011239fx2014003194fx2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1969070305&choix1=et&choix2=et",
         "titre": "3 JUILLET 1969. - Code de la taxe sur la valeur ajoutée (TVA)",
         "domaine": "fiscal",
         "aliases": [
@@ -608,7 +604,6 @@ LOIS_CONNUES = {
 
     "droits_enregistrement": {
         "numac": "2021040322",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=2021040322",
         "titre": "Code des droits d'enregistrement, d'hypothèque et de greffe",
         "domaine": "fiscal",
         "aliases": [
@@ -622,7 +617,6 @@ LOIS_CONNUES = {
 
     "droits_succession": {
         "numac": "2006027130",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=2006027130",
         "titre": "Code des droits de succession (wallon : Décret du 19 janvier 2017)",
         "domaine": "fiscal",
         "aliases": [
@@ -636,7 +630,6 @@ LOIS_CONNUES = {
 
     "taxe_circulation": {
         "numac": "2020020547",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=2020020547",
         "titre": "Loi relative à la taxe de circulation sur les véhicules automobiles (coordonnée 1992)",
         "domaine": "fiscal",
         "aliases": [
@@ -648,7 +641,6 @@ LOIS_CONNUES = {
 
     "taxe_regionale_wallonne": {
         "numac": "1999027513",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=1999027513",
         "titre": "Décret wallon du 6 mai 1999 relatif à l'établissement, au recouvrement et au contentieux en matière de taxes régionales wallonnes",
         "domaine": "fiscal",
         "aliases": [
@@ -660,7 +652,6 @@ LOIS_CONNUES = {
 
     "procedure_fiscale": {
         "numac": "1999003180",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=1999003180",
         "titre": "Loi du 15 mars 1999 relative au contentieux en matière fiscale (anciennement AR 1919)",
         "domaine": "fiscal",
         "aliases": [
@@ -675,7 +666,6 @@ LOIS_CONNUES = {
 
     "prix_transfert": {
         "numac": "1992003456",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=1992003456",
         "titre": "CIR92 — Articles relatifs aux prix de transfert (art. 185 § 2 et 207/1)",
         "domaine": "fiscal",
         "aliases": [
@@ -694,11 +684,16 @@ LOIS_CONNUES = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 def construire_url_citation(numac: str) -> str:
-    """
-    URL Justel officielle — format view_numac vérifié et fonctionnel.
-    https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=NUMAC
-    """
-    return f"https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac={numac}"
+    """URL universelle vérifiée sur Justel — fonctionne pour tous les numac."""
+    return (
+        f"https://www.ejustice.just.fgov.be/cgi_loi/article.pl"
+        f"?language=fr&lg_txt=F&caller=list"
+        f"&numac_search={numac}"
+        f"&{numac}=0"
+        f"&nm_ecran={numac}"
+        f"&trier=promulgation&fr=f"
+        f"&choix1=et&choix2=et"
+    )
 
 
 async def bloquer_ressources(route):
