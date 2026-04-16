@@ -4,18 +4,7 @@ from playwright.async_api import async_playwright
 from playwright.sync_api import sync_playwright
 import re
 
-app = FastAPI(title="Belgian Law Brain API — Lois & Jurisprudence v9")
-
-# ─────────────────────────────────────────────────────────────────────────────
-# DICTIONNAIRE DES LOIS BELGES — NUMAC VÉRIFIÉS SUR JUSTEL
-# Domaines couverts :
-#   1. Droit du travail
-#   2. Droit administratif
-#   3. Droit commercial
-#   4. Droit financier
-#   5. Droit fiscal
-
-# ─────────────────────────────────────────────────────────────────────────────
+app = FastAPI(title="Belgian Law Brain API — Lois & Jurisprudence ")
 
 LOIS_CONNUES = {
 
@@ -132,7 +121,7 @@ LOIS_CONNUES = {
     },
 
     "teletravail": {
-        "numac": "2021A01165",  
+        "numac": "2021A01165",
         "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2021-05-05&numac_search=2021A01165&page=1&lg_txt=F&caller=list&2021A01165=1&trier=promulgation&view_numac=2021200888&fr=f&text1=CCT+149+&choix1=et&choix2=et",
         "titre": "CCT n°149 du 26 janvier 2021 concernant le télétravail (Version Coordonnée)",
         "domaine": "travail",
@@ -143,29 +132,31 @@ LOIS_CONNUES = {
         ]
     },
 
-  "outplacement": {
-    "numac": "2001012802", 
-    "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2001-09-15&numac_search=2001012802&page=1&lg_txt=F&caller=list&2001012802=0&trier=promulgation&view_numac=2005021175fx2021a01165fx2021200888&fr=f&nm_ecran=2001012802&choix1=et&choix2=et",
-    "titre": "Loi du 5 septembre 2001 visant à améliorer le taux d'emploi des travailleurs (Chapitre V - Reclassement professionnel)",
-    "domaine": "travail",
-    "aliases": [
-        "outplacement", "reclassement professionnel",
-        "accompagnement reclassement", "droit outplacement",
-        "cct 82", "offre outplacement",
-        "45 ans licenciement", "préavis 30 semaines",
-        "procédure reclassement", "cellule emploi restructuration"
-    ]
-},
+    "outplacement": {
+        "numac": "2001012802",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2001-09-15&numac_search=2001012802&page=1&lg_txt=F&caller=list&2001012802=0&trier=promulgation&view_numac=2005021175fx2021a01165fx2021200888&fr=f&nm_ecran=2001012802&choix1=et&choix2=et",
+        "titre": "Loi du 5 septembre 2001 visant à améliorer le taux d'emploi des travailleurs (Chapitre V - Reclassement professionnel)",
+        "domaine": "travail",
+        "aliases": [
+            "outplacement", "reclassement professionnel",
+            "accompagnement reclassement", "droit outplacement",
+            "cct 82", "offre outplacement",
+            "45 ans licenciement", "préavis 30 semaines",
+            "procédure reclassement", "cellule emploi restructuration"
+        ]
+    },
+
     "outplacement_restructuration": {
-    "numac": "2005021175",
-    "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2005-12-30&numac_search=2005021175&page=1&lg_txt=F&caller=list&2005021175=0&trier=promulgation&view_numac=2021a01165fx2021200888&fr=f&nm_ecran=2005021175&choix1=et&choix2=et",
-    "titre": "Loi du 23 décembre 2005 - Pacte de solidarité entre les générations (art. 31-41 cellules emploi)",
-    "domaine": "travail",
-    "aliases": [
-        "cellule emploi", "restructuration licenciement collectif",
-        "indemnité reclassement restructuration", "pacte solidarité générations"
-    ]
-},
+        "numac": "2005021175",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2005-12-30&numac_search=2005021175&page=1&lg_txt=F&caller=list&2005021175=0&trier=promulgation&view_numac=2021a01165fx2021200888&fr=f&nm_ecran=2005021175&choix1=et&choix2=et",
+        "titre": "Loi du 23 décembre 2005 - Pacte de solidarité entre les générations (art. 31-41 cellules emploi)",
+        "domaine": "travail",
+        "aliases": [
+            "cellule emploi", "restructuration licenciement collectif",
+            "indemnité reclassement restructuration", "pacte solidarité générations"
+        ]
+    },
+
     "statut_independants": {
         "numac": "1967072702",
         "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1967-07-29&numac_search=1967072702&page=1&lg_txt=F&caller=list&1967072702=0&trier=promulgation&view_numac=1978070303&ddd=1967-07-27&fr=f&choix1=et&choix2=et",
@@ -183,6 +174,7 @@ LOIS_CONNUES = {
             "indépendant à titre complémentaire"
         ]
     },
+
     "anti_discrimination": {
         "numac": "2007002099",
         "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2007-05-30&numac_search=2007002099&page=1&lg_txt=F&caller=list&2007002099=0&trier=promulgation&view_numac=2021a01165fx2021200888&fr=f&nm_ecran=2007002099&choix1=et&choix2=et",
@@ -299,8 +291,8 @@ LOIS_CONNUES = {
         ]
     },
 
-   "cpas": {
-        "numac": "1976070810", 
+    "cpas": {
+        "numac": "1976070810",
         "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1976-08-05&numac_search=1976070810&page=1&lg_txt=F&caller=list&1976070810=0&trier=promulgation&view_numac=1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1976070810&choix1=et&choix2=et",
         "titre": "8 JUILLET 1976. - Loi organique des CPAS (Version Wallonne Consolidée)",
         "domaine": "administratif",
@@ -325,7 +317,6 @@ LOIS_CONNUES = {
             "régularisation infraction", "permis unique wallon"
         ]
     },
-    
 
     "permis_environnement": {
         "numac": "1999027439",
@@ -346,7 +337,7 @@ LOIS_CONNUES = {
 
     "code_societes": {
         "numac": "2019A40586",
-        "url_source": " https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2019-04-04&numac_search=2019A40586&page=1&lg_txt=F&caller=list&2019A40586=0&trier=promulgation&view_numac=1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2019A40586&choix1=et&choix2=et",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2019-04-04&numac_search=2019A40586&page=1&lg_txt=F&caller=list&2019A40586=0&trier=promulgation&view_numac=1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2019A40586&choix1=et&choix2=et",
         "titre": "Code des sociétés et des associations du 23 mars 2019 (CSA/WVV)",
         "domaine": "commercial",
         "aliases": [
@@ -442,7 +433,7 @@ LOIS_CONNUES = {
         "aliases": [
             "propriété intellectuelle", "droit auteur", "droits auteur",
             "copyright", "brevet", "marque", "droit voisin",
-            "œuvre intellectuelle", "logiciel droit", "base de données droit",
+            "oeuvre intellectuelle", "logiciel droit", "base de données droit",
             "dessin modèle", "propriété industrielle", "innovation travail"
         ]
     },
@@ -453,7 +444,7 @@ LOIS_CONNUES = {
         "titre": "Code de droit économique - Livre XI (Propriété intellectuelle)",
         "domaine": "commercial",
         "aliases": [
-            "droits auteur salarié", "œuvre créée travail", "auteur employé",
+            "droits auteur salarié", "oeuvre créée travail", "auteur employé",
             "droits auteur contrat travail", "cession droits auteur",
             "droit moral auteur", "droits patrimoniaux auteur"
         ]
@@ -467,10 +458,13 @@ LOIS_CONNUES = {
         "aliases": [
             "bail commercial", "bail fonds commerce", "renouvellement bail commercial",
             "indemnité éviction", "droit renouvellement",
-            "loyer commercial", "cession bail commercial"
+            "loyer commercial", "cession bail commercial",
+            "baux commerciaux", "renouvellement bail", "bail 9 ans",
+            "préavis bail commercial", "sous-location commerciale"
         ]
     },
-     "retard_paiement": {
+
+    "retard_paiement": {
         "numac": "2002009716",
         "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2002-08-07&numac_search=2002009716&page=1&lg_txt=F&caller=list&2002009716=0&trier=promulgation&view_numac=1967072702fx1978070303&fr=f&nm_ecran=2002009716&choix1=et&choix2=et",
         "titre": "Loi du 2 août 2002 concernant la lutte contre le retard de paiement dans les transactions commerciales",
@@ -485,6 +479,7 @@ LOIS_CONNUES = {
             "recouvrement créance commerciale", "intérêts légaux facture"
         ]
     },
+
     "pratiques_marche": {
         "numac": "2013A11134",
         "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
@@ -512,7 +507,6 @@ LOIS_CONNUES = {
             "intermediaire financier", "délit d'initié", "manipulation marché",
             "abus marché", "prospectus", "information privilégiée",
             "insider trading", "intégrité marché financier"
-            
         ]
     },
 
@@ -533,7 +527,7 @@ LOIS_CONNUES = {
     "credit_consommateur": {
         "numac": "2013A11134",
         "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2013-03-29&numac_search=2013A11134&page=1&lg_txt=F&caller=list&2013A11134=0&trier=promulgation&view_numac=2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=2013A11134&choix1=et&choix2=et",
-        "titre": "Code de droit économique - Livre VII (Crédit consommateur )",
+        "titre": "Code de droit économique - Livre VII (Crédit consommateur)",
         "domaine": "financier",
         "aliases": [
             "crédit consommateur", "prêt personnel", "crédit voiture",
@@ -726,8 +720,6 @@ LOIS_CONNUES = {
             "accord préalable prix transfert", "ruling fiscal prix transfert"
         ]
     },
-
-    
 }
 
 
@@ -735,11 +727,15 @@ LOIS_CONNUES = {
 # FONCTIONS UTILITAIRES
 # ─────────────────────────────────────────────────────────────────────────────
 
-def construire_url_citation(numac: str) -> str:
+def get_url_source(numac: str) -> str:
     """
-    URL Justel officielle — format view_numac vérifié et fonctionnel.
-    https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=NUMAC
+    Retourne l'URL officielle depuis le dictionnaire LOIS_CONNUES.
+    Si le numac n'est pas dans le dictionnaire, génère une URL standard.
     """
+    for loi in LOIS_CONNUES.values():
+        if loi["numac"] == numac:
+            return loi["url_source"]
+    # Fallback générique si numac inconnu
     return f"https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac={numac}"
 
 
@@ -772,6 +768,7 @@ def detecter_loi_par_sujet(sujet: str) -> list[dict]:
                 "numac": loi["numac"],
                 "titre": loi["titre"],
                 "domaine": loi.get("domaine", ""),
+                "url_source": loi["url_source"],
                 "score": score,
                 "aliases_matches": aliases_matches
             })
@@ -800,7 +797,8 @@ async def extraire_articles_depuis_texte(texte: str, mots_cles: list[str]) -> li
 
 
 async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None) -> dict:
-    url = construire_url_citation(numac)
+    # Utilise l'URL officielle du dictionnaire
+    url = get_url_source(numac)
     mots_cles = mots_cles or []
     BASE_URL_JUSTEL = "https://www.ejustice.just.fgov.be"
     async with async_playwright() as p:
@@ -885,10 +883,11 @@ async def recherche_justel_fallback(sujet: str) -> dict:
                     est_loi = any(m in titre.lower() for m in ["loi du", "loi relative", "loi sur", "loi portant"])
                     mots_sujet = [m for m in sujet.lower().split() if len(m) > 3]
                     score_titre = sum(1 for m in mots_sujet if m in titre.lower())
+                    # Utilise get_url_source pour avoir la bonne URL si connue
                     resultats.append({
                         "numac": numac,
                         "titre": titre[:200],
-                        "url_source": construire_url_citation(numac),
+                        "url_source": get_url_source(numac),
                         "est_loi": est_loi,
                         "score_titre": score_titre
                     })
@@ -946,7 +945,7 @@ async def loi_connue_par_sujet(
 
     meilleur = candidats[0]
     numac = meilleur["numac"]
-    url_source = construire_url_citation(numac)
+    url_source = meilleur["url_source"]  # URL officielle depuis le dictionnaire
 
     reponse = {
         "status": "ok",
@@ -965,7 +964,7 @@ async def loi_connue_par_sujet(
                 "titre": c["titre"],
                 "numac": c["numac"],
                 "domaine": c.get("domaine", ""),
-                "url_source": construire_url_citation(c["numac"]),
+                "url_source": c["url_source"],
                 "score": c["score"]
             }
             for c in candidats[1:3]
@@ -1018,7 +1017,8 @@ async def lire_article_precis(
     article: str = Query(...),
     langue: str = Query("fr")
 ):
-    url = construire_url_citation(numac)
+    # Utilise l'URL officielle du dictionnaire
+    url = get_url_source(numac)
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(
@@ -1068,7 +1068,6 @@ async def lire_article_precis(
         except Exception as e:
             await browser.close()
             raise HTTPException(status_code=500, detail=str(e))
-
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1162,8 +1161,9 @@ def lire_arret_complet(query: UrlModel):
                 browser.close()
             raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/loi/liste")
-async def lister_lois_connues(domaine: str = Query("", description="Filtrer par domaine : travail, administratif, commercial, financier, fiscal, civil, social, pénal, transversal")):
+async def lister_lois_connues(domaine: str = Query("", description="Filtrer par domaine")):
     lois_filtrees = {
         cle: loi for cle, loi in LOIS_CONNUES.items()
         if not domaine or loi.get("domaine", "") == domaine
@@ -1178,7 +1178,7 @@ async def lister_lois_connues(domaine: str = Query("", description="Filtrer par 
                 "titre": loi["titre"],
                 "domaine": loi.get("domaine", ""),
                 "numac": loi["numac"],
-                "url_source": construire_url_citation(loi["numac"]),
+                "url_source": loi["url_source"],
                 "nb_aliases": len(loi["aliases"])
             }
             for cle, loi in lois_filtrees.items()
@@ -1224,7 +1224,7 @@ async def debug_justel(sujet: str = Query(...)):
                         resultats.append({
                             "numac": numac,
                             "titre": titre[:200],
-                            "url_source": construire_url_citation(numac)
+                            "url_source": get_url_source(numac)
                         })
             await browser.close()
             return {"total": len(resultats), "resultats": resultats}
@@ -1241,8 +1241,8 @@ async def health():
         domaines[d] = domaines.get(d, 0) + 1
     return {
         "status": "online",
-        "version": "v8.0 — 5 domaines : travail, administratif, commercial, financier, fiscal",
+        "version": "v9.0 — 5 domaines : travail, administratif, commercial, financier, fiscal",
         "lois_dans_dictionnaire": len(LOIS_CONNUES),
         "couverture_par_domaine": domaines,
-        "url_format": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&..."
+        "note": "URLs Justel officielles vérifiées dans LOIS_CONNUES"
     }
