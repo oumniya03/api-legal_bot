@@ -143,17 +143,29 @@ LOIS_CONNUES = {
         ]
     },
 
-    "outplacement": {         #deja dans qdrant à verifier apres
-        "numac": "2001012748", 
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2001-12-11&numac_search=2001012748&page=1&lg_txt=F&caller=list&2001012748=0&trier=promulgation&view_numac=2021200888fx2014201545fx1987012597fx1971062850fx1971031602fx2013012289fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=2001012748&choix1=et&choix2=et",
-        "titre": "CCT n°82 du 10 juillet 2002 relative au droit à l'outplacement",
-        "domaine": "travail",
-        "aliases": [
-            "outplacement", "reclassement professionnel",
-            "accompagnement reclassement", "droit outplacement",
-            "cct 82", "offre outplacement"
-        ]
-    },
+  "outplacement": {
+    "numac": "2001012802", 
+    "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2001-09-15&numac_search=2001012802&page=1&lg_txt=F&caller=list&2001012802=0&trier=promulgation&view_numac=2005021175fx2021a01165fx2021200888&fr=f&nm_ecran=2001012802&choix1=et&choix2=et",
+    "titre": "Loi du 5 septembre 2001 visant à améliorer le taux d'emploi des travailleurs (Chapitre V - Reclassement professionnel)",
+    "domaine": "travail",
+    "aliases": [
+        "outplacement", "reclassement professionnel",
+        "accompagnement reclassement", "droit outplacement",
+        "cct 82", "offre outplacement",
+        "45 ans licenciement", "préavis 30 semaines",
+        "procédure reclassement", "cellule emploi restructuration"
+    ]
+},
+    "outplacement_restructuration": {
+    "numac": "2005021175",
+    "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2005-12-30&numac_search=2005021175&page=1&lg_txt=F&caller=list&2005021175=0&trier=promulgation&view_numac=2021a01165fx2021200888&fr=f&nm_ecran=2005021175&choix1=et&choix2=et",
+    "titre": "Loi du 23 décembre 2005 - Pacte de solidarité entre les générations (art. 31-41 cellules emploi)",
+    "domaine": "travail",
+    "aliases": [
+        "cellule emploi", "restructuration licenciement collectif",
+        "indemnité reclassement restructuration", "pacte solidarité générations"
+    ]
+},
     "statut_independants": {
         "numac": "1967072702",
         "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1967-07-29&numac_search=1967072702&page=1&lg_txt=F&caller=list&1967072702=0&trier=promulgation&view_numac=1978070303&ddd=1967-07-27&fr=f&choix1=et&choix2=et",
@@ -449,7 +461,7 @@ LOIS_CONNUES = {
 
     "bail_commercial": {
         "numac": "1951043003",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&cn_search=2019041328",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1951-05-10&numac_search=1951043003&page=1&lg_txt=F&caller=list&1951043003=0&trier=promulgation&view_numac=2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1951043003&choix1=et&choix2=et",
         "titre": "Loi du 30 avril 1951 sur les baux commerciaux",
         "domaine": "commercial",
         "aliases": [
@@ -638,7 +650,7 @@ LOIS_CONNUES = {
 
     "droits_enregistrement": {
         "numac": "2021040322",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=2021040322",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2021-02-19&numac_search=2021040322&page=1&lg_txt=F&caller=list&2021040322=0&trier=promulgation&view_numac=2006027130fx2020020547fx2021040322&fr=f&nm_ecran=2021040322&choix1=et&choix2=et",
         "titre": "Code des droits d'enregistrement, d'hypothèque et de greffe",
         "domaine": "fiscal",
         "aliases": [
@@ -652,7 +664,7 @@ LOIS_CONNUES = {
 
     "droits_succession": {
         "numac": "2006027130",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=2006027130",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2006-08-08&numac_search=2006027130&page=1&lg_txt=F&caller=list&2006027130=0&trier=promulgation&view_numac=2020020547fx2021040322&fr=f&nm_ecran=2006027130&choix1=et&choix2=et",
         "titre": "Code des droits de succession (wallon : Décret du 19 janvier 2017)",
         "domaine": "fiscal",
         "aliases": [
@@ -666,7 +678,7 @@ LOIS_CONNUES = {
 
     "taxe_circulation": {
         "numac": "2020020547",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=2020020547",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2020-03-13&numac_search=2020020547&page=1&lg_txt=F&caller=list&2020020547=0&trier=promulgation&view_numac=2021040322&fr=f&nm_ecran=2020020547&choix1=et&choix2=et",
         "titre": "Loi relative à la taxe de circulation sur les véhicules automobiles (coordonnée 1992)",
         "domaine": "fiscal",
         "aliases": [
@@ -678,7 +690,7 @@ LOIS_CONNUES = {
 
     "taxe_regionale_wallonne": {
         "numac": "1999027513",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=1999027513",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1999-07-01&numac_search=1999027513&page=1&lg_txt=F&caller=list&1999027513=0&trier=promulgation&view_numac=2021040322fx2006027130fx2020020547fx2021040322&fr=f&nm_ecran=1999027513&choix1=et&choix2=et",
         "titre": "Décret wallon du 6 mai 1999 relatif à l'établissement, au recouvrement et au contentieux en matière de taxes régionales wallonnes",
         "domaine": "fiscal",
         "aliases": [
@@ -690,7 +702,7 @@ LOIS_CONNUES = {
 
     "procedure_fiscale": {
         "numac": "1999003180",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=1999003180",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1999-03-27&numac_search=1999003180&page=1&lg_txt=F&caller=list&1999003180=0&trier=promulgation&view_numac=1999027513fx2021040322fx2006027130fx2020020547fx2021040322&fr=f&nm_ecran=1999003180&choix1=et&choix2=et",
         "titre": "Loi du 15 mars 1999 relative au contentieux en matière fiscale (anciennement AR 1919)",
         "domaine": "fiscal",
         "aliases": [
@@ -705,7 +717,7 @@ LOIS_CONNUES = {
 
     "prix_transfert": {
         "numac": "1992003456",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language=fr&view_numac=1992003456",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1992-07-30&numac_search=1992003456&page=1&lg_txt=F&caller=list&1992003456=0&trier=promulgation&view_numac=1999003180fx1999027513fx2021040322fx2006027130fx2020020547fx2021040322&fr=f&nm_ecran=1992003456&choix1=et&choix2=et",
         "titre": "CIR92 — Articles relatifs aux prix de transfert (art. 185 § 2 et 207/1)",
         "domaine": "fiscal",
         "aliases": [
