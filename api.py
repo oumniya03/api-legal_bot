@@ -613,7 +613,7 @@ LOIS_CONNUES = {
 
     "cir92": {
         "numac": "1992003456",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1992-07-30&numac_search=1992003456&page=1&lg_txt=F&caller=list&1992003456=0&trier=promulgation&view_numac=2017014203fx2017013368fx2018030643fx2014011239fx2014003194fx2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1992003456&choix1=et&choix2=et",
+        "url_source": "https://finances.wallonie.be/files/NOSTRA/textes%20legaux/code%20des%20impots%20sur%20le%20revenu%20-%20exercice%202022.pdf",
         "titre": "Code des impôts sur les revenus 1992 (CIR92)",
         "domaine": "fiscal",
         "aliases": [
