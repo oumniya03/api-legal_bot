@@ -98,7 +98,7 @@ LOIS_CONNUES = {
 
     "travail_interimaire": {
         "numac": "1987012597",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1987-08-20&numac_search=1987012597&page=1&lg_txt=F&caller=list&1987012597=0&trier=promulgation&view_numac=1971062850fx1971031602fx2013012289fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=1987012597&choix1=et&choix2=et",
+        "url_source": "https://cnt-nar.be/sites/default/files/documents/CCT-COORD/cct-108.pdf",
         "titre": "Loi du 24 juillet 1987 sur le travail temporaire, le travail intérimaire et la mise de travailleurs à la disposition d'utilisateurs",
         "domaine": "travail",
         "aliases": [
@@ -110,7 +110,7 @@ LOIS_CONNUES = {
 
     "protection_licenciement": {
         "numac": "2014201545",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2014-03-20&numac_search=2014201545&page=1&lg_txt=F&caller=list&2014201545=0&trier=promulgation&view_numac=1987012597fx1971062850fx1971031602fx2013012289fx1996012650fx1978070303fx2013012289&fr=f&nm_ecran=2014201545&choix1=et&choix2=et",
+        "url_source": "https://cnt-nar.be/sites/default/files/documents/CCT-COORD/cct-109.pdf",
         "titre": "CCT n°109 du 12 février 2014 concernant la motivation du licenciement",
         "domaine": "travail",
         "aliases": [
@@ -122,7 +122,7 @@ LOIS_CONNUES = {
 
     "teletravail": {
         "numac": "2021A01165",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2021-05-05&numac_search=2021A01165&page=1&lg_txt=F&caller=list&2021A01165=1&trier=promulgation&view_numac=2021200888&fr=f&text1=CCT+149+&choix1=et&choix2=et",
+        "url_source": "https://cnt-nar.be/sites/default/files/documents/fr/cct%20149.pdf",
         "titre": "CCT n°149 du 26 janvier 2021 concernant le télétravail (Version Coordonnée)",
         "domaine": "travail",
         "aliases": [
@@ -134,7 +134,7 @@ LOIS_CONNUES = {
 
     "outplacement": {
         "numac": "2001012802",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2001-09-15&numac_search=2001012802&page=1&lg_txt=F&caller=list&2001012802=0&trier=promulgation&view_numac=2005021175fx2021a01165fx2021200888&fr=f&nm_ecran=2001012802&choix1=et&choix2=et",
+        "url_source": "https://cnt-nar.be/sites/default/files/documents/fr/CCT%20n%C2%B0%2082%20%28Version%20coordonn%C3%A9e%29.pdf",
         "titre": "Loi du 5 septembre 2001 visant à améliorer le taux d'emploi des travailleurs (Chapitre V - Reclassement professionnel)",
         "domaine": "travail",
         "aliases": [
@@ -226,7 +226,7 @@ LOIS_CONNUES = {
 
     "loi_motivation_actes": {
         "numac": "1991000416",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1991-09-12&numac_search=1991000416&page=1&lg_txt=F&caller=list&1991000416=0&trier=promulgation&view_numac=1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1991000416&choix1=et&choix2=et",
+        "url_source": "https://wallex.wallonie.be/files/pdfs/11/11936_Loi_relative_%c3%a0_la_motivation_formelle_des_actes_administratifs_01-01-1992-.pdf",
         "titre": "Loi du 29 juillet 1991 relative à la motivation formelle des actes administratifs",
         "domaine": "administratif",
         "aliases": [
@@ -293,7 +293,7 @@ LOIS_CONNUES = {
 
     "cpas": {
         "numac": "1976070810",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1976-08-05&numac_search=1976070810&page=1&lg_txt=F&caller=list&1976070810=0&trier=promulgation&view_numac=1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1976070810&choix1=et&choix2=et",
+        "url_source": "https://wallex.wallonie.be/files/pdfs/21/19818_Loi_organique_des_centres_publics_d_action_sociale_(CPAS)_01-01-2025-04-12-2025.pdf",
         "titre": "8 JUILLET 1976. - Loi organique des CPAS (Version Wallonne Consolidée)",
         "domaine": "administratif",
         "aliases": [
@@ -644,7 +644,7 @@ LOIS_CONNUES = {
 
     "droits_enregistrement": {
         "numac": "2021040322",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2021-02-19&numac_search=2021040322&page=1&lg_txt=F&caller=list&2021040322=0&trier=promulgation&view_numac=2006027130fx2020020547fx2021040322&fr=f&nm_ecran=2021040322&choix1=et&choix2=et",
+        "url_source": "https://www.minfin.fgov.be/myminfin-web/pages/public/fisconet/document/d1fc1a51-46c6-4584-a672-c32613eeaf40",
         "titre": "Code des droits d'enregistrement, d'hypothèque et de greffe",
         "domaine": "fiscal",
         "aliases": [
@@ -658,7 +658,7 @@ LOIS_CONNUES = {
 
     "droits_succession": {
         "numac": "2006027130",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2006-08-08&numac_search=2006027130&page=1&lg_txt=F&caller=list&2006027130=0&trier=promulgation&view_numac=2020020547fx2021040322&fr=f&nm_ecran=2006027130&choix1=et&choix2=et",
+        "url_source": "https://www.minfin.fgov.be/myminfin-web/pages/public/fisconet/document/ad162165-ea5d-4ab6-8fc4-a415e9eafd78",
         "titre": "Code des droits de succession (wallon : Décret du 19 janvier 2017)",
         "domaine": "fiscal",
         "aliases": [
@@ -711,7 +711,7 @@ LOIS_CONNUES = {
 
     "prix_transfert": {
         "numac": "1992003456",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1992-07-30&numac_search=1992003456&page=1&lg_txt=F&caller=list&1992003456=0&trier=promulgation&view_numac=1999003180fx1999027513fx2021040322fx2006027130fx2020020547fx2021040322&fr=f&nm_ecran=1992003456&choix1=et&choix2=et",
+        "url_source": "https://finances.wallonie.be/files/NOSTRA/textes%20legaux/code%20des%20impots%20sur%20le%20revenu%20-%20exercice%202022.pdf",
         "titre": "CIR92 — Articles relatifs aux prix de transfert (art. 185 § 2 et 207/1)",
         "domaine": "fiscal",
         "aliases": [
