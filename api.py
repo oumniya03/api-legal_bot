@@ -99,6 +99,7 @@ LOIS_CONNUES = {
     "travail_interimaire": {
         "numac": "1987012597",
         "url_source": "https://cnt-nar.be/sites/default/files/documents/CCT-COORD/cct-108.pdf",
+        "url_source_nl": "https://cnt-nar.be/sites/default/files/documents/nl/Cao%20nr.%20108%20%28Geco%C3%B6rdineerde%20versie%29.pdf",
         "titre": "Loi du 24 juillet 1987 sur le travail temporaire, le travail intérimaire et la mise de travailleurs à la disposition d'utilisateurs",
         "domaine": "travail",
         "aliases": [
@@ -111,6 +112,7 @@ LOIS_CONNUES = {
     "protection_licenciement": {
         "numac": "2014201545",
         "url_source": "https://cnt-nar.be/sites/default/files/documents/CCT-COORD/cct-109.pdf",
+        "url_source_nl": "https://cnt-nar.be/sites/default/files/documents/CAO-COORD/cao-109.pdf",
         "titre": "CCT n°109 du 12 février 2014 concernant la motivation du licenciement",
         "domaine": "travail",
         "aliases": [
@@ -123,6 +125,7 @@ LOIS_CONNUES = {
     "teletravail": {
         "numac": "2021A01165",
         "url_source": "https://cnt-nar.be/sites/default/files/documents/fr/cct%20149.pdf",
+        "url_source_nl": "https://cnt-nar.be/sites/default/files/documents/nl/Cao%20nr.%20149%20%28Geco%C3%B6rdineerde%20versie%29.pdf",
         "titre": "CCT n°149 du 26 janvier 2021 concernant le télétravail (Version Coordonnée)",
         "domaine": "travail",
         "aliases": [
@@ -135,6 +138,7 @@ LOIS_CONNUES = {
     "outplacement": {
         "numac": "2001012802",
         "url_source": "https://cnt-nar.be/sites/default/files/documents/fr/CCT%20n%C2%B0%2082%20%28Version%20coordonn%C3%A9e%29.pdf",
+        "url_source_nl": "https://cnt-nar.be/sites/default/files/documents/nl/Cao%20nr.%2082%20%28Geco%C3%B6rdineerde%20versie%29.pdf",
         "titre": "Loi du 5 septembre 2001 visant à améliorer le taux d'emploi des travailleurs (Chapitre V - Reclassement professionnel)",
         "domaine": "travail",
         "aliases": [
@@ -613,7 +617,7 @@ LOIS_CONNUES = {
 
     "cir92": {
         "numac": "1992003456",
-        "url_source": "https://finances.wallonie.be/files/NOSTRA/textes%20legaux/code%20des%20impots%20sur%20le%20revenu%20-%20exercice%202022.pdf",
+        "url_source": "https://www.minfin.fgov.be/myminfin-web/pages/public/fisconet/document/563a8357-9f6c-43db-bca8-16324e321eeb",
         "titre": "Code des impôts sur les revenus 1992 (CIR92)",
         "domaine": "fiscal",
         "aliases": [
@@ -645,6 +649,7 @@ LOIS_CONNUES = {
     "droits_enregistrement": {
         "numac": "2021040322",
         "url_source": "https://www.minfin.fgov.be/myminfin-web/pages/public/fisconet/document/d1fc1a51-46c6-4584-a672-c32613eeaf40",
+        "url_source_nl": "https://www.minfin.fgov.be/myminfin-web/pages/public/fisconet/document/7fffd01f-4230-4bcd-bb97-6bec15c2bd98",
         "titre": "Code des droits d'enregistrement, d'hypothèque et de greffe",
         "domaine": "fiscal",
         "aliases": [
@@ -659,6 +664,7 @@ LOIS_CONNUES = {
     "droits_succession": {
         "numac": "2006027130",
         "url_source": "https://www.minfin.fgov.be/myminfin-web/pages/public/fisconet/document/ad162165-ea5d-4ab6-8fc4-a415e9eafd78",
+        "url_source_nl": "https://www.minfin.fgov.be/myminfin-web/pages/public/fisconet/document/1b324e7e-7f44-4e3d-8eee-ca0b495fb42b",
         "titre": "Code des droits de succession (wallon : Décret du 19 janvier 2017)",
         "domaine": "fiscal",
         "aliases": [
@@ -711,7 +717,7 @@ LOIS_CONNUES = {
 
     "prix_transfert": {
         "numac": "1992003456",
-        "url_source": "https://finances.wallonie.be/files/NOSTRA/textes%20legaux/code%20des%20impots%20sur%20le%20revenu%20-%20exercice%202022.pdf",
+        "url_source": "https://www.minfin.fgov.be/myminfin-web/pages/public/fisconet/document/563a8357-9f6c-43db-bca8-16324e321eeb",
         "titre": "CIR92 — Articles relatifs aux prix de transfert (art. 185 § 2 et 207/1)",
         "domaine": "fiscal",
         "aliases": [
@@ -738,16 +744,31 @@ LANG_MAP = {
 def get_url_source(numac: str, language: str = "fr") -> str:
     """
     Retourne l'URL officielle depuis le dictionnaire LOIS_CONNUES.
-    Adapte la langue pour les URLs ejustice.just.fgov.be.
-    Les URLs externes (cnt-nar.be, minfin.fgov.be) restent en français.
+    Adapte la langue selon les règles suivantes :
+
+    1. Si une URL spécifique à la langue existe (url_source_nl / url_source_de) → la retourner.
+    2. Sinon, si l'URL principale est sur Justel (ejustice.just.fgov.be) → remplacer
+       language=fr → language=<lang> et lg_txt=F → lg_txt=<L>.
+    3. Sinon (URL externe : wallex.wallonie.be, etc. sans traduction connue) → fallback FR.
+    4. EN (anglais) : pas supporté par les sources officielles → fallback FR (l'agent
+       traduira la réponse, mais les URLs restent en FR).
     """
     lang_code, lg_txt = LANG_MAP.get(language, ("fr", "F"))
     for loi in LOIS_CONNUES.values():
         if loi["numac"] == numac:
+            # Étape 1 : URL spécifique à la langue (NL ou DE) explicitement définie
+            if language == "nl" and loi.get("url_source_nl"):
+                return loi["url_source_nl"]
+            if language == "de" and loi.get("url_source_de"):
+                return loi["url_source_de"]
+
             url = loi["url_source"]
+
+            # Étape 2 : URL Justel → adapter via paramètres language= et lg_txt=
             if "ejustice.just.fgov.be" in url:
                 url = url.replace("language=fr", f"language={lang_code}")
                 url = url.replace("lg_txt=F", f"lg_txt={lg_txt}")
+            # Étape 3 : URL externe sans version localisée connue → laisser tel quel (FR)
             return url
     return f"https://www.ejustice.just.fgov.be/cgi_loi/rech.pl?language={lang_code}&view_numac={numac}"
 
