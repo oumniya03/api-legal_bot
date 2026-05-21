@@ -4,7 +4,7 @@ from playwright.async_api import async_playwright
 from playwright.sync_api import sync_playwright
 import re
 
-app = FastAPI(title="Belgian Law Brain API — Lois & Jurisprudence (v10 — Multilingue fr/nl/de)")
+app = FastAPI(title="Belgian Law Brain API — Lois & Jurisprudence (v11 — Multilingue fr/nl/de)")
 
 LOIS_CONNUES = {
 
