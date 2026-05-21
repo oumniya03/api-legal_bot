@@ -830,16 +830,20 @@ async def extraire_articles_depuis_texte(texte: str, mots_cles: list[str]) -> li
     return articles[:5]
 
 
-async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None) -> dict:
-    # Utilise l'URL officielle du dictionnaire (langue fr par défaut pour le scraping interne)
-    url = get_url_source(numac, "fr")
+async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None, language: str = "fr") -> dict:
+    # Adapter URL et locale à la langue demandée (Justel/Fisconet multilingues).
+    # EN non supporté par Justel : fallback FR pour le scraping.
+    scrape_lang = language if language in ("fr", "nl", "de") else "fr"
+    locale_map = {"fr": "fr-BE", "nl": "nl-BE", "de": "de-BE"}
+    lang_code_map = {"fr": ("fr", "F"), "nl": ("nl", "N"), "de": ("de", "D")}
+    url = get_url_source(numac, scrape_lang)
     mots_cles = mots_cles or []
     BASE_URL_JUSTEL = "https://www.ejustice.just.fgov.be"
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            locale="fr-BE"
+            locale=locale_map.get(scrape_lang, "fr-BE")
         )
         page = await context.new_page()
         await page.route("**/*", bloquer_ressources)
@@ -848,7 +852,8 @@ async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None) -> dict
             await page.wait_for_timeout(2000)
             texte = await page.inner_text("body")
             if len(texte) < 500 or "formulaire" in texte.lower()[:200]:
-                url_fallback = f"{BASE_URL_JUSTEL}/cgi_loi/change_lg.pl?language=fr&la=F&table_name=loi&cn={numac}"
+                lang_code, lg_la = lang_code_map.get(scrape_lang, ("fr", "F"))
+                url_fallback = f"{BASE_URL_JUSTEL}/cgi_loi/change_lg.pl?language={lang_code}&la={lg_la}&table_name=loi&cn={numac}"
                 await page.goto(url_fallback, wait_until="networkidle", timeout=30000)
                 await page.wait_for_timeout(1500)
                 texte = await page.inner_text("body")
@@ -861,6 +866,7 @@ async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None) -> dict
             return {
                 "status": "ok",
                 "numac": numac,
+                "language_used": scrape_lang,
                 "url_source": url,
                 "texte_longueur": len(texte),
                 "articles": articles
@@ -870,19 +876,24 @@ async def scraper_loi_par_numac(numac: str, mots_cles: list[str] = None) -> dict
             return {"status": "erreur", "numac": numac, "detail": str(e)}
 
 
-async def recherche_justel_fallback(sujet: str) -> dict:
+async def recherche_justel_fallback(sujet: str, language: str = "fr") -> dict:
+    # Adapter la langue à Justel (EN non supporté → fallback FR)
+    scrape_lang = language if language in ("fr", "nl", "de") else "fr"
+    locale_map = {"fr": "fr-BE", "nl": "nl-BE", "de": "de-BE"}
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            locale="fr-BE"
+            locale=locale_map.get(scrape_lang, "fr-BE")
         )
         page = await context.new_page()
         try:
             await page.goto(
-                "https://www.ejustice.just.fgov.be/cgi/rech.pl?language=fr",
+                f"https://www.ejustice.just.fgov.be/cgi/rech.pl?language={scrape_lang}",
                 wait_until="networkidle", timeout=20000
             )
+            # Le mot "loi" pour le filtre type dépend de la langue
+            type_mot = {"fr": "loi", "nl": "wet", "de": "gesetz"}.get(scrape_lang, "loi")
             await page.evaluate(f"""
                 const form = document.querySelector('form');
                 if (form) {{
@@ -891,7 +902,7 @@ async def recherche_justel_fallback(sujet: str) -> dict:
                     const typeSelect = document.querySelector('select[name="dt"]');
                     if (typeSelect) {{
                         for (let opt of typeSelect.options) {{
-                            if (opt.text.trim().toLowerCase() === 'loi') {{
+                            if (opt.text.trim().toLowerCase() === '{type_mot}') {{
                                 opt.selected = true; break;
                             }}
                         }}
@@ -905,6 +916,14 @@ async def recherche_justel_fallback(sujet: str) -> dict:
             liens = await page.query_selector_all("a[href*='numac']")
             resultats = []
             numacs_vus = set()
+            # Mots-clés pour détecter "loi" dans le titre selon la langue
+            mots_loi_par_lang = {
+                "fr": ["loi du", "loi relative", "loi sur", "loi portant"],
+                "nl": ["wet van", "wet betreffende", "wet houdende", "wet op"],
+                "de": ["gesetz vom", "gesetz über", "gesetz betreffend"]
+            }
+            mots_loi = mots_loi_par_lang.get(scrape_lang, mots_loi_par_lang["fr"])
+
             for lien in liens[:20]:
                 href = await lien.get_attribute("href") or ""
                 titre = (await lien.inner_text()).strip()
@@ -914,14 +933,14 @@ async def recherche_justel_fallback(sujet: str) -> dict:
                     if numac in numacs_vus:
                         continue
                     numacs_vus.add(numac)
-                    est_loi = any(m in titre.lower() for m in ["loi du", "loi relative", "loi sur", "loi portant"])
+                    est_loi = any(m in titre.lower() for m in mots_loi)
                     mots_sujet = [m for m in sujet.lower().split() if len(m) > 3]
                     score_titre = sum(1 for m in mots_sujet if m in titre.lower())
-                    # Utilise get_url_source pour avoir la bonne URL si connue
+                    # URL adaptée à la langue demandée (get_url_source gère le multilingue)
                     resultats.append({
                         "numac": numac,
                         "titre": titre[:200],
-                        "url_source": get_url_source(numac),
+                        "url_source": get_url_source(numac, language),
                         "est_loi": est_loi,
                         "score_titre": score_titre
                     })
@@ -932,6 +951,7 @@ async def recherche_justel_fallback(sujet: str) -> dict:
             if not resultats:
                 return {
                     "status": "non_trouve",
+                    "language": language,
                     "message": f"Aucune loi trouvée pour '{sujet}'.",
                     "loi": None
                 }
@@ -940,6 +960,7 @@ async def recherche_justel_fallback(sujet: str) -> dict:
             return {
                 "status": "ok",
                 "source": "justel_scraping_fallback",
+                "language": language,
                 "loi": {
                     "titre": premier["titre"],
                     "numac": premier["numac"],
@@ -950,7 +971,7 @@ async def recherche_justel_fallback(sujet: str) -> dict:
                     for r in resultats[1:3]
                 ],
                 "instruction_agent": (
-                    f"Pour citer des articles : GET /loi/article?numac={premier['numac']}&article=XX. "
+                    f"Pour citer des articles : GET /loi/article?numac={premier['numac']}&article=XX&language={language}. "
                     f"URL source : {premier['url_source']}"
                 )
             }
@@ -958,6 +979,7 @@ async def recherche_justel_fallback(sujet: str) -> dict:
             await browser.close()
             return {
                 "status": "erreur_fallback",
+                "language": language,
                 "message": f"Recherche Justel impossible : {str(e)}",
                 "loi": None
             }
@@ -1089,20 +1111,24 @@ async def loi_par_fichier(
 @app.get("/loi/connue")
 async def loi_connue_par_sujet(
     sujet: str = Query(..., description="Sujet juridique en langage naturel"),
-    scrape: bool = Query(False, description="Si True, scrape aussi les articles pertinents")
+    scrape: bool = Query(False, description="Si True, scrape aussi les articles pertinents"),
+    language: str = Query("fr", description="Langue des URLs retournées : fr, nl, de, en (en→fr)")
 ):
     candidats = detecter_loi_par_sujet(sujet)
 
     if not candidats:
-        return await recherche_justel_fallback(sujet)
+        return await recherche_justel_fallback(sujet, language)
 
     meilleur = candidats[0]
     numac = meilleur["numac"]
-    url_source = meilleur["url_source"]  # URL officielle depuis le dictionnaire
+    # URL adaptée à la langue demandée (Justel/Fisconet multilingues, CNT NL si dispo,
+    # fallback FR pour Wallex et autres sources sans traduction connue).
+    url_source = get_url_source(numac, language)
 
     reponse = {
         "status": "ok",
         "source": "dictionnaire_lois_connues",
+        "language": language,
         "confiance": "haute" if meilleur["score"] >= 3 else "moyenne",
         "loi": {
             "titre": meilleur["titre"],
@@ -1117,21 +1143,21 @@ async def loi_connue_par_sujet(
                 "titre": c["titre"],
                 "numac": c["numac"],
                 "domaine": c.get("domaine", ""),
-                "url_source": c["url_source"],
+                "url_source": get_url_source(c["numac"], language),
                 "score": c["score"]
             }
             for c in candidats[1:3]
         ],
         "articles": [],
         "instruction_agent": (
-            f"Pour citer des articles verbatim : GET /loi/article?numac={numac}&article=XX. "
+            f"Pour citer des articles verbatim : GET /loi/article?numac={numac}&article=XX&language={language}. "
             f"URL source à citer : {url_source}"
         )
     }
 
     if scrape:
         mots = [m for m in sujet.lower().split() if len(m) > 3]
-        resultat_scrape = await scraper_loi_par_numac(numac, mots)
+        resultat_scrape = await scraper_loi_par_numac(numac, mots, language)
         reponse["articles"] = resultat_scrape.get("articles", [])
         reponse["scrape_status"] = resultat_scrape.get("status")
 
@@ -1139,28 +1165,37 @@ async def loi_connue_par_sujet(
 
 
 @app.get("/loi/sujet")
-async def loi_sujet_alias(sujet: str = Query(...), langue: str = Query("fr")):
-    return await loi_connue_par_sujet(sujet=sujet)
+async def loi_sujet_alias(
+    sujet: str = Query(...),
+    langue: str = Query("fr"),
+    language: str = Query(None, description="Alias de 'langue', priorité si fourni")
+):
+    # 'langue' (FR) ou 'language' (EN) — le paramètre language prend la priorité s'il est fourni
+    lang_final = language if language else langue
+    return await loi_connue_par_sujet(sujet=sujet, language=lang_final)
 
 
 @app.get("/loi/numac")
 async def lire_loi_par_numac(
     numac: str = Query(...),
     mots_cles: str = Query(""),
-    max_articles: int = Query(5)
+    max_articles: int = Query(5),
+    language: str = Query("fr", description="Langue du scraping et de l'URL retournée")
 ):
     mots = [m.strip() for m in mots_cles.split(",") if len(m.strip()) > 2] if mots_cles else []
-    resultat = await scraper_loi_par_numac(numac, mots)
+    resultat = await scraper_loi_par_numac(numac, mots, language)
     if resultat["status"] == "erreur":
         raise HTTPException(status_code=502, detail=f"Impossible de récupérer {numac} : {resultat.get('detail')}")
     return {
         "status": "ok",
         "numac": numac,
+        "language": language,
+        "language_used": resultat.get("language_used", "fr"),
         "url_source": resultat["url_source"],
         "texte_longueur": resultat["texte_longueur"],
         "articles_extraits": len(resultat.get("articles", [])[:max_articles]),
         "articles": resultat.get("articles", [])[:max_articles],
-        "note": "Texte récupéré en temps réel depuis ejustice.just.fgov.be (Justel)"
+        "note": f"Texte récupéré en temps réel depuis ejustice.just.fgov.be (Justel, langue: {resultat.get('language_used', 'fr')})"
     }
 
 
@@ -1168,59 +1203,100 @@ async def lire_loi_par_numac(
 async def lire_article_precis(
     numac: str = Query(...),
     article: str = Query(...),
-    langue: str = Query("fr")
+    langue: str = Query("fr"),
+    language: str = Query(None, description="Alias EN de 'langue', prioritaire si fourni")
 ):
-    # Utilise l'URL officielle du dictionnaire (langue fr par défaut pour le scraping interne)
-    url = get_url_source(numac, "fr")
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        context = await browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            locale="fr-BE"
-        )
-        page = await context.new_page()
-        await page.route("**/*", bloquer_ressources)
-        try:
-            await page.goto(url, wait_until="networkidle", timeout=45000)
-            await page.wait_for_timeout(2000)
-            texte = await page.inner_text("body")
-            texte = re.sub(r'\n{3,}', '\n\n', texte)
+    # 'language' (EN) prend la priorité sur 'langue' (FR) pour compatibilité
+    lang_final = language if language else langue
+    if lang_final not in ("fr", "nl", "de", "en"):
+        lang_final = "fr"
+    # EN non supporté par Justel : on scrape en FR, l'agent traduira la citation
+    scrape_lang = "fr" if lang_final == "en" else lang_final
 
-            article_escape = re.escape(article)
-            patterns = [
-                rf"(Art\.?\s*{article_escape}[\.< \t].+?)(?=\n\s*Art\.?\s*\d|\Z)",
-                rf"(Article\s+{article_escape}[\. ].+?)(?=\n\s*Art\.?\s*\d|\Z)",
-            ]
-            texte_art = None
-            for pat in patterns:
-                m = re.search(pat, texte, re.DOTALL | re.IGNORECASE)
-                if m:
-                    texte_art = m.group(1)[:3000].strip()
-                    break
+    # URL multilingue à retourner (Justel/Fisconet multilingues, sinon FR via get_url_source)
+    url_localisee = get_url_source(numac, lang_final)
+    # URL réelle utilisée pour le scraping (peut différer si lang_final == 'en')
+    url_scrape = get_url_source(numac, scrape_lang)
 
-            await browser.close()
+    async def _scrape_article(target_url: str, target_lang: str):
+        """Scrape Justel pour trouver l'article. Retourne (texte_art, url_utilisee) ou (None, url)."""
+        # Détermine la locale playwright + accept-language selon la langue
+        locale_map = {"fr": "fr-BE", "nl": "nl-BE", "de": "de-BE"}
+        playwright_locale = locale_map.get(target_lang, "fr-BE")
 
-            if texte_art:
-                return {
-                    "status": "ok",
-                    "numac": numac,
-                    "article": article,
-                    "texte_verbatim": texte_art,
-                    "url_source": url,
-                    "note": "Texte récupéré en temps réel depuis Justel (législation consolidée)"
-                }
-            else:
-                return {
-                    "status": "article_non_trouve",
-                    "numac": numac,
-                    "article": article,
-                    "texte_verbatim": None,
-                    "url_source": url,
-                    "note": f"Article {article} introuvable dans {numac}. Consultez directement : {url}"
-                }
-        except Exception as e:
-            await browser.close()
-            raise HTTPException(status_code=500, detail=str(e))
+        async with async_playwright() as p:
+            browser = await p.chromium.launch(headless=True)
+            context = await browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                locale=playwright_locale
+            )
+            page = await context.new_page()
+            await page.route("**/*", bloquer_ressources)
+            try:
+                await page.goto(target_url, wait_until="networkidle", timeout=45000)
+                await page.wait_for_timeout(2000)
+                texte = await page.inner_text("body")
+                texte = re.sub(r'\n{3,}', '\n\n', texte)
+
+                article_escape = re.escape(article)
+                # Patterns multilingues : FR "Art./Article", NL "Art./Artikel", DE "Art./Artikel"
+                patterns = [
+                    rf"(Art\.?\s*{article_escape}[\.< \t].+?)(?=\n\s*Art\.?\s*\d|\Z)",
+                    rf"(Article\s+{article_escape}[\. ].+?)(?=\n\s*Art\.?\s*\d|\Z)",
+                    rf"(Artikel\s+{article_escape}[\. ].+?)(?=\n\s*Art(?:ikel)?\.?\s*\d|\Z)",
+                ]
+                texte_art = None
+                for pat in patterns:
+                    m = re.search(pat, texte, re.DOTALL | re.IGNORECASE)
+                    if m:
+                        texte_art = m.group(1)[:3000].strip()
+                        break
+
+                await browser.close()
+                return texte_art
+            except Exception as e:
+                await browser.close()
+                raise e
+
+    try:
+        # Tentative 1 : langue demandée
+        texte_art = await _scrape_article(url_scrape, scrape_lang)
+        fallback_used = False
+
+        # Tentative 2 (fallback FR) : si scraping NL/DE n'a rien retourné
+        if not texte_art and scrape_lang != "fr":
+            url_fr = get_url_source(numac, "fr")
+            texte_art = await _scrape_article(url_fr, "fr")
+            fallback_used = True
+            url_scrape = url_fr
+
+        if texte_art:
+            return {
+                "status": "ok",
+                "numac": numac,
+                "article": article,
+                "language_requested": lang_final,
+                "language_used": "fr" if fallback_used else scrape_lang,
+                "fallback_to_fr": fallback_used,
+                "texte_verbatim": texte_art,
+                "url_source": url_localisee,
+                "note": (
+                    f"Texte récupéré depuis Justel ({'FR (fallback)' if fallback_used else scrape_lang.upper()}). "
+                    "L'URL ci-dessus pointe vers la version dans la langue demandée."
+                )
+            }
+        else:
+            return {
+                "status": "article_non_trouve",
+                "numac": numac,
+                "article": article,
+                "language_requested": lang_final,
+                "texte_verbatim": None,
+                "url_source": url_localisee,
+                "note": f"Article {article} introuvable dans {numac}. Consultez directement : {url_localisee}"
+            }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1229,23 +1305,33 @@ async def lire_article_precis(
 
 class QueryModel(BaseModel):
     mot_cle: str
+    language: str = "fr"  # langue cible : fr, nl, de (en→fr)
 
 class UrlModel(BaseModel):
     url: str
+    language: str = "fr"  # langue cible pour le contenu de l'arrêt
 
 
 @app.post("/scrape")
 async def scrape_jurisprudence(query: QueryModel):
-    """Recherche jurisprudence JuPortal par mot-clé. Retourne arrêts post-2019."""
+    """
+    Recherche jurisprudence JuPortal par mot-clé. Retourne arrêts post-2019.
+    Le paramètre language adapte la locale de scraping et l'URL d'entrée.
+    """
     mot_cle = query.mot_cle
+    lang = query.language if query.language in ("fr", "nl", "de") else "fr"
+    locale_map = {"fr": "fr-BE", "nl": "nl-BE", "de": "de-BE"}
+
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
+        context = await browser.new_context(locale=locale_map.get(lang, "fr-BE"))
+        page = await context.new_page()
         await page.route("**/*", bloquer_ressources)
         try:
             await page.goto("https://juportal.be/moteur/formulaire", timeout=60000)
             await page.locator("input#texpression").fill(mot_cle)
-            await page.locator("button[type='submit']:has-text('Rechercher')").first.click()
+            # Le bouton "Rechercher" / "Zoeken" / "Suchen" — on prend le 1er bouton de soumission
+            await page.locator("button[type='submit']").first.click()
             await page.wait_for_timeout(3000)
             liens_elements = await page.locator("a[href*='ECLI']").all()
             resultats = []
@@ -1260,18 +1346,22 @@ async def scrape_jurisprudence(query: QueryModel):
                         annee = int(match_annee.group(1))
                         if annee >= 2019:
                             type_doc = "ARRÊT" if ":ARR." in ecli else "DÉCISION"
+                            # URL du contenu dans la langue demandée
+                            lang_upper = lang.upper()
+                            url_content = f"https://juportal.be/content/{ecli}/{lang_upper}"
                             resultats.append({
                                 "ecli": ecli,
                                 "annee": annee,
                                 "type": type_doc,
-                                "url": "https://juportal.be" + url_propre
+                                "url": url_content,
+                                "language": lang
                             })
             resultats_tries = sorted(resultats, key=lambda x: x["annee"], reverse=True)[:10]
-            texte = f"--- RÉSULTATS POUR '{mot_cle}' (post-2019) ---\n"
+            texte = f"--- RÉSULTATS POUR '{mot_cle}' (post-2019, langue={lang}) ---\n"
             for i, r in enumerate(resultats_tries):
                 texte += f"ARR{i+1}: [{r['type']}] ECLI={r['ecli']} | ANNÉE={r['annee']} | URL={r['url']}\n"
             await browser.close()
-            return {"status": "success", "data": texte}
+            return {"status": "success", "language": lang, "data": texte}
         except Exception as e:
             await browser.close()
             raise HTTPException(status_code=500, detail=str(e))
@@ -1279,14 +1369,30 @@ async def scrape_jurisprudence(query: QueryModel):
 
 @app.post("/lire_arret")
 def lire_arret_complet(query: UrlModel):
-    """Lit le texte intégral d'un arrêt JuPortal depuis son URL."""
+    """
+    Lit le texte intégral d'un arrêt JuPortal depuis son URL.
+    Si l'URL est de la forme /content/{ECLI}/{LANG}, on respecte cette langue.
+    Sinon (URL générique JuPortal), on adapte la locale du browser selon query.language.
+    """
     url = query.url
     if "juportal.be" not in url:
         raise HTTPException(status_code=400, detail="L'URL doit provenir de juportal.be")
+
+    lang = query.language if query.language in ("fr", "nl", "de") else "fr"
+    locale_map = {"fr": "fr-BE", "nl": "nl-BE", "de": "de-BE"}
+
+    # Si l'URL est /content/{ECLI}/{LANG_UPPER}, on déduit la langue réellement demandée
+    import re as _re
+    content_match = _re.search(r"/content/(ECLI:BE:[^/]+)/(FR|NL|DE)", url, _re.IGNORECASE)
+    if content_match:
+        lang_in_url = content_match.group(2).lower()
+        # On respecte la langue de l'URL plutôt que celle du paramètre
+        lang = lang_in_url
+
     with sync_playwright() as p:
         try:
             browser = p.chromium.launch(headless=True)
-            context = browser.new_context()
+            context = browser.new_context(locale=locale_map.get(lang, "fr-BE"))
             page = context.new_page()
             page.route("**/*", bloquer_ressources_sync)
             page.goto(url)
@@ -1304,11 +1410,12 @@ def lire_arret_complet(query: UrlModel):
             ecli_confirme = match_ecli.group(1) if match_ecli else "ECLI non détecté dans l'URL"
             reponse_finale = (
                 f"ECLI DE CET ARRÊT : {ecli_confirme}\n"
-                f"URL SOURCE : {url}\n\n"
+                f"URL SOURCE : {url}\n"
+                f"LANGUE : {lang.upper()}\n\n"
                 f"TEXTE DE L'ARRÊT:\n{texte_limite}"
             )
             browser.close()
-            return {"status": "success", "data": reponse_finale}
+            return {"status": "success", "language": lang, "data": reponse_finale}
         except Exception as e:
             if "browser" in locals():
                 browser.close()
@@ -1394,7 +1501,7 @@ async def health():
         domaines[d] = domaines.get(d, 0) + 1
     return {
         "status": "online",
-        "version": "v10.0 — 5 domaines : travail, administratif, commercial, financier, fiscal | Multilingue : fr/nl/de/en",
+        "version": "v11.0 — 5 domaines : travail, administratif, commercial, financier, fiscal | Multilingue : fr/nl/de/en",
         "lois_dans_dictionnaire": len(LOIS_CONNUES),
         "couverture_par_domaine": domaines,
         "note": "URLs Justel officielles vérifiées dans LOIS_CONNUES"
