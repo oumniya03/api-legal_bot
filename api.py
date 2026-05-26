@@ -634,7 +634,7 @@ LOIS_CONNUES = {
 
     "tva": {
         "numac": "1969070305",
-        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=2026-02-20&numac_search=2026001291&page=1&lg_txt=F&caller=list&2026001291=0&trier=promulgation&view_numac=2026021004fr&fr=f&nm_ecran=2026001291&choix1=et&choix2=et",
+        "url_source": "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&sum_date=&pd_search=1969-07-17&numac_search=1969070305&page=1&lg_txt=F&caller=list&1969070305=0&trier=promulgation&view_numac=1992003456fx2017014203fx2017013368fx2018030643fx2014011239fx2014003194fx2002003392fx2019011404fx2013a11134fx2017012998fx2019a40586fx1999027439fx2016a05561fx1976070810fx1937100201fx2018031595fx2016021053fx1994000357fx1991000416fx1973011250fx2007002098fx2007002099fx2021a01165fx2021200888&fr=f&nm_ecran=1969070305&choix1=et&choix2=et",
         "titre": "3 JUILLET 1969. - Code de la taxe sur la valeur ajoutée (TVA)",
         "domaine": "fiscal",
         "aliases": [
